@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Settings
+namespace RasDashboard.Pages.Settings
 {
     public class ThemeModel : PageModel
     {

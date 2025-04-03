@@ -1,16 +1,13 @@
-namespace RhsDashboard.Models;
+namespace RasDashboard.Models;
 
-public class Entity<TId>
+public abstract class Entity
 {
-    public TId? Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public DateTime CreatedDate { get; set; }
 
     public DateTime? UpdatedDate { get; set; }
 
     public DateTime? DeletedDate { get; set; }
-
-    public Entity() => this.Id = default(TId);
-
-    public Entity(TId? id) => this.Id = id;
+    
 }

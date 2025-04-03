@@ -1,8 +1,8 @@
 using AutoMapper;
-using RhsDashboard.DTOs;
-using RhsDashboard.Models;
+using RasDashboard.DTOs;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Mappings;
+namespace RasDashboard.Mappings;
 
 public class EmployeeProfile: Profile
 {

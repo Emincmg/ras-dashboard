@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Forms
+namespace RasDashboard.Pages.Forms
 {
     public class FormValidationModel : PageModel
     {

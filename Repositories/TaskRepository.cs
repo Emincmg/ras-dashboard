@@ -1,34 +1,35 @@
-using RhsDashboard.Areas.Identity.Data;
-using RhsDashboard.DTOs;
-using RhsDashboard.Interfaces;
-using RhsDashboard.Models;
+using RasDashboard.Areas.Identity.Data;
+using RasDashboard.DTOs;
+using RasDashboard.Interfaces;
+using RasDashboard.Models;
+using Task = RasDashboard.Models.Task;
 
-namespace RhsDashboard.Repositories;
+namespace RasDashboard.Repositories;
 
 public class TaskRepository : ITaskRepository
 {
-    private readonly RhsDashboardContext _dbContext;
+    private readonly RasDashboardContext _dbContext;
 
-    public TaskRepository(RhsDashboardContext dbContext)
+    public TaskRepository(RasDashboardContext dbContext)
     {
         _dbContext = dbContext;
     }
-    public Task<List<TaskItem>> GetAllTasks()
+    public List<Task> GetAllTasks()
+    {
+       return _dbContext.Tasks.ToList();
+    }
+
+    public Task<TaskItem> CreateTask(TaskItem taskItem)
     {
         throw new NotImplementedException();
     }
 
-    public Task<TaskItemDto> CreateTask(TaskItem taskItem)
+    public Task<TaskItem> UpdateTask(TaskItem taskItem)
     {
         throw new NotImplementedException();
     }
 
-    public Task<TaskItemDto> UpdateTask(TaskItem taskItem)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<TaskItemDto> DeleteTask(int id)
+    public Task<TaskItem> DeleteTask(int id)
     {
         throw new NotImplementedException();
     }

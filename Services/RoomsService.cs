@@ -1,11 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RhsDashboard.Areas.Identity.Data;
-using RhsDashboard.DTOs.Rooms;
-using RhsDashboard.Interfaces;
+using RasDashboard.Areas.Identity.Data;
+using RasDashboard.DTOs.Rooms;
+using RasDashboard.Interfaces;
 
-namespace RhsDashboard.Services;
+namespace RasDashboard.Services;
 
 public class RoomsService : IRoomsService
 {

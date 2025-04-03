@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Chart
+namespace RasDashboard.Pages.Chart
 {
     public class PieChartModel : PageModel
     {

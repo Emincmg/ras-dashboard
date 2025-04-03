@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RhsDashboard.Areas.Identity.Data;
+using RasDashboard.Areas.Identity.Data;
 
 #nullable disable
 
-namespace RhsDashboard.Migrations
+namespace RasDashboard.Migrations
 {
-    [DbContext(typeof(RhsDashboardContext))]
-    [Migration("20250325105613_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(RasDashboardContext))]
+    partial class RasDashboardContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +155,7 @@ namespace RhsDashboard.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RhsDashboard.Models.Employee", b =>
+            modelBuilder.Entity("RasDashboard.Models.Employee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -232,6 +229,9 @@ namespace RhsDashboard.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -252,10 +252,12 @@ namespace RhsDashboard.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("RoomId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RhsDashboard.Models.Room", b =>
+            modelBuilder.Entity("RasDashboard.Models.Room", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -280,7 +282,7 @@ namespace RhsDashboard.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("RhsDashboard.Models.Task", b =>
+            modelBuilder.Entity("RasDashboard.Models.Task", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,10 +309,10 @@ namespace RhsDashboard.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("RhsDashboard.Models.TaskItem", b =>
+            modelBuilder.Entity("RasDashboard.Models.TaskItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -328,6 +330,9 @@ namespace RhsDashboard.Migrations
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
@@ -348,7 +353,24 @@ namespace RhsDashboard.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("TaskItems");
+                });
+
+            modelBuilder.Entity("RoomTaskItem", b =>
+                {
+                    b.Property<int>("RoomsId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TaskItemsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RoomsId", "TaskItemsId");
+
+                    b.HasIndex("TaskItemsId");
+
+                    b.ToTable("RoomTaskItem");
                 });
 
             modelBuilder.Entity("TaskTaskItem", b =>
@@ -377,7 +399,7 @@ namespace RhsDashboard.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("RhsDashboard.Models.Employee", null)
+                    b.HasOne("RasDashboard.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -386,7 +408,7 @@ namespace RhsDashboard.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("RhsDashboard.Models.Employee", null)
+                    b.HasOne("RasDashboard.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -401,7 +423,7 @@ namespace RhsDashboard.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RhsDashboard.Models.Employee", null)
+                    b.HasOne("RasDashboard.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -410,26 +432,65 @@ namespace RhsDashboard.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("RhsDashboard.Models.Employee", null)
+                    b.HasOne("RasDashboard.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RasDashboard.Models.Employee", b =>
+                {
+                    b.HasOne("RasDashboard.Models.Room", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("RoomId");
+                });
+
+            modelBuilder.Entity("RasDashboard.Models.TaskItem", b =>
+                {
+                    b.HasOne("RasDashboard.Models.Employee", null)
+                        .WithMany("TaskItems")
+                        .HasForeignKey("EmployeeId");
+                });
+
+            modelBuilder.Entity("RoomTaskItem", b =>
+                {
+                    b.HasOne("RasDashboard.Models.Room", null)
+                        .WithMany()
+                        .HasForeignKey("RoomsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RasDashboard.Models.TaskItem", null)
+                        .WithMany()
+                        .HasForeignKey("TaskItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TaskTaskItem", b =>
                 {
-                    b.HasOne("RhsDashboard.Models.TaskItem", null)
+                    b.HasOne("RasDashboard.Models.TaskItem", null)
                         .WithMany()
                         .HasForeignKey("TaskItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RhsDashboard.Models.Task", null)
+                    b.HasOne("RasDashboard.Models.Task", null)
                         .WithMany()
                         .HasForeignKey("TasksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RasDashboard.Models.Employee", b =>
+                {
+                    b.Navigation("TaskItems");
+                });
+
+            modelBuilder.Entity("RasDashboard.Models.Room", b =>
+                {
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

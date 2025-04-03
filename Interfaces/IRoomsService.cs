@@ -1,6 +1,6 @@
-using RhsDashboard.DTOs.Rooms;
+using RasDashboard.DTOs.Rooms;
 
-namespace RhsDashboard.Interfaces;
+namespace RasDashboard.Interfaces;
 
 public interface IRoomsService
 {

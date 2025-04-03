@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace RhsDashboard.Models;
+namespace RasDashboard.Models;
 
-public class TaskItem : Entity<Guid>
+public class TaskItem : Entity
 {
     [Required, MaxLength(255)]
     public string Title { get; set; } = string.Empty;

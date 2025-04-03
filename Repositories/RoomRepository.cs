@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using RhsDashboard.Areas.Identity.Data;
-using RhsDashboard.Interfaces;
-using RhsDashboard.Models;
+using RasDashboard.Areas.Identity.Data;
+using RasDashboard.Interfaces;
+using RasDashboard.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace RhsDashboard.Repositories;
+namespace RasDashboard.Repositories;
 
 public class RoomRepository : IRoomRepository
 {
-    private readonly RhsDashboardContext _context;
+    private readonly RasDashboardContext _context;
 
-    public RoomRepository(RhsDashboardContext context)
+    public RoomRepository(RasDashboardContext context)
     {
         _context = context;
     }

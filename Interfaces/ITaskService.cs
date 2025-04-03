@@ -1,10 +1,10 @@
-using RhsDashboard.DTOs;
+using RasDashboard.DTOs;
 
-namespace RhsDashboard.Interfaces;
+namespace RasDashboard.Interfaces;
 
 public interface ITaskService
 {
-    public Task<List<TaskItemDto>> GetAllTasks();
+    public List<TaskDto> GetAllTasks();
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto);
     public Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto);
     public Task<TaskItemDto> DeleteTask(int id);

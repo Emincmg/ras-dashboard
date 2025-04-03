@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using RhsDashboard.DTOs;
-using RhsDashboard.Interfaces;
+using RasDashboard.DTOs;
+using RasDashboard.Interfaces;
 
-namespace RhsDashboard.Pages
+namespace RasDashboard.Pages
 {
     [Authorize]
     public class IndexModel : PageModel

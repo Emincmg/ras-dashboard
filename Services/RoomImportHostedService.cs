@@ -1,12 +1,12 @@
 using System.Text.Json;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using RhsDashboard.Areas.Identity.Data;
-using RhsDashboard.DTOs.Rooms;
-using RhsDashboard.Models;
+using RasDashboard.Areas.Identity.Data;
+using RasDashboard.DTOs.Rooms;
+using RasDashboard.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace RhsDashboard.Services;
+namespace RasDashboard.Services;
 
 public class RoomImportHostedService : IHostedService
 {
@@ -49,7 +49,7 @@ public class RoomImportHostedService : IHostedService
 
             using (var scope = _scopeFactory.CreateScope()) // Create a new scope
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<RhsDashboardContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<RasDashboardContext>();
 
                 foreach (var room in rooms)
                 {

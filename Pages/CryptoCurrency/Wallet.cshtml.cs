@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.CryptoCurrency
+namespace RasDashboard.Pages.CryptoCurrency
 {
     public class WalletModel : PageModel
     {

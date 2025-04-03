@@ -1,7 +1,6 @@
 ﻿@*
-    RhsDashboard - ASP.Net Core 8 App - Developed by Ali Emin Çomoğlu | 2025
+    RasDashboard - ASP.Net Core 8 App - Developed by Ali Emin Çomoğlu | 2025
 *@
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
 
 <aside class="sidebar">
     <button type="button" class="sidebar-close-btn">
@@ -17,7 +16,7 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li class="sidebar-menu-group-title">Application</li>
-            @if (User.IsInRole("User"))
+            @if (User.IsInRole("Employee"))
             {
                 <li>
                     <a href="~/employees/employeeindex">
@@ -63,8 +62,7 @@
                 </li>
             }
 
-            @if (Environment.IsDevelopment())
-            {
+            <environment names="Development">
                 <li class="sidebar-menu-group-title">DEV - UI Elements</li>
 
                 <li class="dropdown">
@@ -374,7 +372,7 @@
                         </li>
                     </ul>
                 </li>
-            }
+            </environment>
         </ul>
     </div>
 </aside>

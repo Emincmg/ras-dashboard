@@ -1,9 +1,12 @@
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-CU18-ubuntu-22.04
     environment:
-      SA_PASSWORD: "LocalDev2025!!"
+      MSSQL_SA_PASSWORD: "LocalDev2025"
       ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
     ports:
       - "1433:1433"
     restart: unless-stopped
@@ -12,3 +15,6 @@ services:
 networks:
   backend:
     driver: "bridge"
+volumes:
+  sqlserver-data:
+    driver: local

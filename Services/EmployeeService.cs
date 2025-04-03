@@ -1,17 +1,17 @@
 using AutoMapper;
-using RhsDashboard.Areas.Identity.Data;
-using RhsDashboard.DTOs;
-using RhsDashboard.Interfaces;
-using RhsDashboard.Models;
+using RasDashboard.Areas.Identity.Data;
+using RasDashboard.DTOs;
+using RasDashboard.Interfaces;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Services;
+namespace RasDashboard.Services;
 
 public class EmployeeService : IEmployeeService
 {
-    private readonly RhsDashboardContext _context;
+    private readonly RasDashboardContext _context;
     private readonly IMapper _mapper;
 
-    public EmployeeService(RhsDashboardContext context, IMapper mapper)
+    public EmployeeService(RasDashboardContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

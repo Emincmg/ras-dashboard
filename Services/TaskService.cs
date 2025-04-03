@@ -1,10 +1,10 @@
 using AutoMapper;
-using RhsDashboard.DTOs;
-using RhsDashboard.Interfaces;
-using RhsDashboard.Models;
+using RasDashboard.DTOs;
+using RasDashboard.Interfaces;
+using RasDashboard.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace RhsDashboard.Services;
+namespace RasDashboard.Services;
 
 public class TaskService : ITaskService
 {
@@ -18,9 +18,10 @@ public class TaskService : ITaskService
     }
 
 
-    public Task<List<TaskItemDto>> GetAllTasks()
+    public List<TaskDto> GetAllTasks()
     {
-        throw new NotImplementedException();
+        var tasks = _taskRepository.GetAllTasks();
+        return _mapper.Map<List<TaskDto>>(tasks);
     }
 
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto)

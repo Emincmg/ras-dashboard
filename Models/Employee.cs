@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace RhsDashboard.Models;
+namespace RasDashboard.Models;
 
 public class Employee : IdentityUser
 {

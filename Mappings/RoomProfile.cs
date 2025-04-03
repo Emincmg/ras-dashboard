@@ -1,8 +1,8 @@
 using AutoMapper;
-using RhsDashboard.DTOs.Rooms;
-using RhsDashboard.Models;
+using RasDashboard.DTOs.Rooms;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Mappings;
+namespace RasDashboard.Mappings;
 
 public class RoomProfile : Profile
 {

@@ -1,7 +1,8 @@
 using AutoMapper;
-using RhsDashboard.DTOs;
+using RasDashboard.DTOs;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Models;
+namespace RasDashboard.Mappings;
 
 public class TaskItemProfile : Profile
 {

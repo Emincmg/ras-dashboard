@@ -1,7 +1,7 @@
 using FluentValidation;
-using RhsDashboard.DTOs;
+using RasDashboard.DTOs;
 
-namespace RhsDashboard.FluentValidators;
+namespace RasDashboard.FluentValidators;
 
 public class EmployeeValidator:AbstractValidator<EmployeeDto>
 {

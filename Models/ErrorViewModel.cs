@@ -1,4 +1,4 @@
-namespace RhsDashboard.Models;
+namespace RasDashboard.Models;
 
 public class ErrorViewModel
 {

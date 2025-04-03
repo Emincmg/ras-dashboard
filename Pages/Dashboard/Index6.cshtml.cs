@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Dashboard
+namespace RasDashboard.Pages.Dashboard
 {
     public class Index6Model : PageModel
     {

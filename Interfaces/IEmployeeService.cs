@@ -1,6 +1,6 @@
-using RhsDashboard.DTOs;
+using RasDashboard.DTOs;
 
-namespace RhsDashboard.Interfaces;
+namespace RasDashboard.Interfaces;
 
 public interface IEmployeeService
 {

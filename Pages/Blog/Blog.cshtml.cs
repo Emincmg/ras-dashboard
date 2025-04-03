@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Blog
+namespace RasDashboard.Pages.Blog
 {
     public class AddBlogModel : PageModel
     {

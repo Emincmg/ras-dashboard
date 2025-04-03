@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using RhsDashboard.Models;
+using RasDashboard.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace RhsDashboard.Pages.Authentication
+namespace RasDashboard.Pages.Authentication
 {
     public class SigninModel : PageModel
     {
@@ -18,19 +18,16 @@ namespace RhsDashboard.Pages.Authentication
             _userManager = userManager;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public required string Email { get; set; }
+            [Required] [EmailAddress] public required string Email { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
             public required string Password { get; set; }
-            
+
             public bool RememberMe { get; set; }
         }
 
@@ -49,19 +46,11 @@ namespace RhsDashboard.Pages.Authentication
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, isPersistent: Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(user, Input.Password,
+                    isPersistent: Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    if (User.IsInRole("Admin"))
-                    {
-                        return RedirectToPage("/Index"); 
-                    }
-                    
-                    if (User.IsInRole("User"))
-                    {
-                        return RedirectToPage("/Employees/EmployeeIndex");
-                    }
-                    
+                    return RedirectToPage("/index");
                 }
                 else
                 {

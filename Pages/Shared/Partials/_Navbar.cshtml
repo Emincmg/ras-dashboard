@@ -1,9 +1,8 @@
 ﻿@*
-    RhsDashboard - ASP.Net Core 8 App - Developed by Ali Emin Çomoğlu.
+    RasDashboard - ASP.Net Core 8 App - Developed by Ali Emin Çomoğlu.
 *@
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment
 @using Microsoft.AspNetCore.Identity
-@using RhsDashboard.Models
+@using RasDashboard.Models
 @inject UserManager<Employee> UserManager
 
 @{
@@ -45,14 +44,13 @@
                                     <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile
                                 </a>
                             </li>
-                            @if (Environment.IsDevelopment())
-                            {
+                            <environment include="Development">
                                 <li>
                                     <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="~/email">
                                         <iconify-icon icon="tabler:message-check" class="icon text-xl"></iconify-icon> Inbox
                                     </a>
-                                </li> 
-                            }
+                                </li>
+                            </environment>
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="~/settings/company">
                                     <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl"></iconify-icon> Setting

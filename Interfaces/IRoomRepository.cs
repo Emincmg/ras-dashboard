@@ -1,7 +1,7 @@
-using RhsDashboard.DTOs.Rooms;
-using RhsDashboard.Models;
+using RasDashboard.DTOs.Rooms;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Interfaces;
+namespace RasDashboard.Interfaces;
 
 public interface IRoomRepository
 {

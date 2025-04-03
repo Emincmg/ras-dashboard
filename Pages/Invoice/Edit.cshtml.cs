@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Invoice
+namespace RasDashboard.Pages.Invoice
 {
     public class EditModel : PageModel
     {

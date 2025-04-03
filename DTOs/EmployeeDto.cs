@@ -1,4 +1,4 @@
-namespace RhsDashboard.DTOs;
+namespace RasDashboard.DTOs;
 
 public class EmployeeDto
 {

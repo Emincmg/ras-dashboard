@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Authentication
+namespace RasDashboard.Pages.Authentication
 {
     public class SignupModel : PageModel
     {

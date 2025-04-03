@@ -1,4 +1,4 @@
-namespace RhsDashboard.DTOs.Rooms;
+namespace RasDashboard.DTOs.Rooms;
 
 public class RoomDto
 {

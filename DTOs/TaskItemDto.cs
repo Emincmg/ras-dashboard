@@ -1,7 +1,7 @@
-using RhsDashboard.Models;
+using RasDashboard.Models;
 using Task = System.Threading.Tasks.Task;
 
-namespace RhsDashboard.DTOs;
+namespace RasDashboard.DTOs;
 
 public class TaskItemDto
 {

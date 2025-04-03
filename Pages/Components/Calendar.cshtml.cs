@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RhsDashboard.Pages.Components
+namespace RasDashboard.Pages.Components
 {
     public class CalendarModel : PageModel
     {

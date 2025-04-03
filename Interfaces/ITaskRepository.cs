@@ -1,12 +1,13 @@
-using RhsDashboard.DTOs;
-using RhsDashboard.Models;
+using RasDashboard.DTOs;
+using RasDashboard.Models;
+using Task = RasDashboard.Models.Task;
 
-namespace RhsDashboard.Interfaces;
+namespace RasDashboard.Interfaces;
 
 public interface ITaskRepository
 {
-    public Task<List<TaskItem>> GetAllTasks();
-    public Task<TaskItemDto> CreateTask(TaskItem taskItem);
-    public Task<TaskItemDto> UpdateTask(TaskItem taskItem);
-    public Task<TaskItemDto> DeleteTask(int id);
+    public List<Task> GetAllTasks();
+    public Task<TaskItem> CreateTask(TaskItem taskItem);
+    public Task<TaskItem> UpdateTask(TaskItem taskItem);
+    public Task<TaskItem> DeleteTask(int id);
 }

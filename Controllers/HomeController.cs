@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using RhsDashboard.Models;
+using RasDashboard.Models;
 
-namespace RhsDashboard.Controllers;
+namespace RasDashboard.Controllers;
 
 public class HomeController : Controller
 {

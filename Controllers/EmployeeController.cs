@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using RhsDashboard.DTOs;
-using RhsDashboard.Interfaces;
+using RasDashboard.DTOs;
+using RasDashboard.Interfaces;
 
-namespace RhsDashboard.Controllers;
+namespace RasDashboard.Controllers;
 
 public class EmployeeController : ControllerBase
 {
