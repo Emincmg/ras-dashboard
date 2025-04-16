@@ -5,6 +5,7 @@ namespace RasDashboard.Models;
 
 public class Employee : IdentityUser
 {
+
     [Required, MaxLength(50)] public string? Name { get; set; }
     [MaxLength(50)] public string? CurrentLocation { get; set; }
     [MaxLength(50)] public string? AssignedLocation { get; set; }
@@ -14,5 +15,5 @@ public class Employee : IdentityUser
     [MaxLength(50)] public string Position { get; set; } = string.Empty;
     [MaxLength(50)] public string Department { get; set; } = string.Empty;
     
-    public List<TaskItem> TaskItems { get; set; } = new List<TaskItem>();
+    public List<TaskItem>? TaskItems { get; set; } 
 }

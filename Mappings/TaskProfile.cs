@@ -1,6 +1,6 @@
 using AutoMapper;
 using RasDashboard.DTOs;
-using Task = RasDashboard.Models.Task;
+using RasDashboard.Models;
 
 namespace RasDashboard.Mappings;
 
@@ -8,6 +8,6 @@ public class TaskProfile : Profile
 {
     public TaskProfile()
     {
-        CreateMap<Task, TaskDto>().ReverseMap();
+        CreateMap<EmployeeTask, TaskDto>().ReverseMap();
     }
 }

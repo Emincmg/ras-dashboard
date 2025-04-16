@@ -16,8 +16,7 @@ public class TaskController : Controller
         _validator = taskItemValidator;
         _taskService = taskService;
     }
-
-    [HttpPost("create")]
+    
     public async Task<IActionResult> CreateTask([FromBody] TaskItemDto taskDto)
     {
         ValidationResult result = await _validator.ValidateAsync(taskDto);
@@ -29,6 +28,6 @@ public class TaskController : Controller
 
         await _taskService.CreateTask(taskDto);
 
-        return Ok("Task created successfully!");
+        return Ok("EmployeeTask created successfully!");
     }
 }

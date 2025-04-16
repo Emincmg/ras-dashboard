@@ -30,13 +30,14 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">Current Task</h5>
+            <h5 class="card-title mb-0">Current EmployeeTask</h5>
         </div>
         <div class="card-body">
-            <form class="row gy-3 needs-validation" novalidate>
+            <form class="row gy-3 needs-validation" asp-controller="Task" asp-action="CreateTask" novalidate>
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
-                    <select class="form-select-lg" required>
+                    <select class="form-select-lg" placeholder="Select Room" required>
+                        <option selected="selected">Select Appartment</option>
                         @foreach (var room in Model.Rooms)
                         {
                             <option value="@room.Id">@room.Name</option>
@@ -47,27 +48,42 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Task</label>
-                    <select class="form-select" required multiple>
+                    <label class="form-label">EmployeeTask</label>
+                    <div class="d-flex align-items-center flex-wrap gap-28">
                         @foreach (var task in Model.Tasks)
                         {
-                            <option value="@task.Id">@task.Name</option>
+                            <div class="form-switch switch-primary d-flex align-items-center gap-3">
+                                <input class="form-check-input" type="checkbox" role="switch"  value="@task.Id" id="switch-@task.Id">
+                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch-@task.Id">@task.Name</label>
+                            </div>
                         }
-                    </select>
+                    </div>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Media </label>
-                    <input class="form-control" type="file" name="#0" multiple="multiple" required>
-                    <div class="invalid-feedback">
-                        Please choose a file.
+                <environment include="Development">
+                    <div class="col-md-6">
+                        <label class="form-label">Media </label>
+                        <input class="form-control" type="file" name="#0" multiple="multiple" >
+                        <div class="invalid-feedback">
+                            Please choose a file.
+                        </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <button class="btn btn-danger-600" type="submit">Start</button>
-                </div>
+                </environment>
+                @if (Model.EmployeeHasCurrentTask)
+                {
+                    //TODO: Add counter for task start.
+                    <div  class="col-12 text-center">
+                        <button class="btn btn-danger-600" type="submit">Stop</button>
+                    </div> 
+                }
+                else
+                {
+                    <div  class="col-12 text-center">
+                        <button class="btn btn-danger-600" type="submit">Start</button>
+                    </div>
+                }
             </form>
         </div>
     </div>

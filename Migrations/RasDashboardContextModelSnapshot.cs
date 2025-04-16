@@ -22,6 +22,21 @@ namespace RasDashboard.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EmployeeTaskTaskItem", b =>
+                {
+                    b.Property<Guid>("TaskItemsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TasksId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TaskItemsId", "TasksId");
+
+                    b.HasIndex("TasksId");
+
+                    b.ToTable("EmployeeTaskTaskItem");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -257,32 +272,7 @@ namespace RasDashboard.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RasDashboard.Models.Room", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("RasDashboard.Models.Task", b =>
+            modelBuilder.Entity("RasDashboard.Models.EmployeeTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -309,7 +299,32 @@ namespace RasDashboard.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("EmployeeTasks");
+                });
+
+            modelBuilder.Entity("RasDashboard.Models.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("RasDashboard.Models.TaskItem", b =>
@@ -338,6 +353,9 @@ namespace RasDashboard.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCurrent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("StartTime")
@@ -373,19 +391,19 @@ namespace RasDashboard.Migrations
                     b.ToTable("RoomTaskItem");
                 });
 
-            modelBuilder.Entity("TaskTaskItem", b =>
+            modelBuilder.Entity("EmployeeTaskTaskItem", b =>
                 {
-                    b.Property<Guid>("TaskItemsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("RasDashboard.Models.TaskItem", null)
+                        .WithMany()
+                        .HasForeignKey("TaskItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("TasksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("TaskItemsId", "TasksId");
-
-                    b.HasIndex("TasksId");
-
-                    b.ToTable("TaskTaskItem");
+                    b.HasOne("RasDashboard.Models.EmployeeTask", null)
+                        .WithMany()
+                        .HasForeignKey("TasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -448,9 +466,11 @@ namespace RasDashboard.Migrations
 
             modelBuilder.Entity("RasDashboard.Models.TaskItem", b =>
                 {
-                    b.HasOne("RasDashboard.Models.Employee", null)
+                    b.HasOne("RasDashboard.Models.Employee", "Employee")
                         .WithMany("TaskItems")
                         .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("RoomTaskItem", b =>
@@ -464,21 +484,6 @@ namespace RasDashboard.Migrations
                     b.HasOne("RasDashboard.Models.TaskItem", null)
                         .WithMany()
                         .HasForeignKey("TaskItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TaskTaskItem", b =>
-                {
-                    b.HasOne("RasDashboard.Models.TaskItem", null)
-                        .WithMany()
-                        .HasForeignKey("TaskItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RasDashboard.Models.Task", null)
-                        .WithMany()
-                        .HasForeignKey("TasksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

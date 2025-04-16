@@ -26,21 +26,7 @@ namespace RasDashboard.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rooms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "EmployeeTasks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -52,7 +38,21 @@ namespace RasDashboard.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_EmployeeTasks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,6 +208,7 @@ namespace RasDashboard.Migrations
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsCurrent = table.Column<bool>(type: "bit", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -224,6 +225,30 @@ namespace RasDashboard.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeTaskTaskItem",
+                columns: table => new
+                {
+                    TaskItemsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TasksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeTaskTaskItem", x => new { x.TaskItemsId, x.TasksId });
+                    table.ForeignKey(
+                        name: "FK_EmployeeTaskTaskItem_EmployeeTasks_TasksId",
+                        column: x => x.TasksId,
+                        principalTable: "EmployeeTasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeTaskTaskItem_TaskItems_TaskItemsId",
+                        column: x => x.TaskItemsId,
+                        principalTable: "TaskItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,30 +271,6 @@ namespace RasDashboard.Migrations
                         name: "FK_RoomTaskItem_TaskItems_TaskItemsId",
                         column: x => x.TaskItemsId,
                         principalTable: "TaskItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TaskTaskItem",
-                columns: table => new
-                {
-                    TaskItemsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TasksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TaskTaskItem", x => new { x.TaskItemsId, x.TasksId });
-                    table.ForeignKey(
-                        name: "FK_TaskTaskItem_TaskItems_TaskItemsId",
-                        column: x => x.TaskItemsId,
-                        principalTable: "TaskItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskTaskItem_Tasks_TasksId",
-                        column: x => x.TasksId,
-                        principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -319,6 +320,11 @@ namespace RasDashboard.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeTaskTaskItem_TasksId",
+                table: "EmployeeTaskTaskItem",
+                column: "TasksId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoomTaskItem_TaskItemsId",
                 table: "RoomTaskItem",
                 column: "TaskItemsId");
@@ -327,11 +333,6 @@ namespace RasDashboard.Migrations
                 name: "IX_TaskItems_EmployeeId",
                 table: "TaskItems",
                 column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskTaskItem_TasksId",
-                table: "TaskTaskItem",
-                column: "TasksId");
         }
 
         /// <inheritdoc />
@@ -353,19 +354,19 @@ namespace RasDashboard.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "RoomTaskItem");
+                name: "EmployeeTaskTaskItem");
 
             migrationBuilder.DropTable(
-                name: "TaskTaskItem");
+                name: "RoomTaskItem");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "TaskItems");
+                name: "EmployeeTasks");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "TaskItems");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

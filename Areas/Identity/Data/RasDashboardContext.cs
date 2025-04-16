@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using RasDashboard.Interfaces;
 using RasDashboard.Models;
-using Task = RasDashboard.Models.Task;
 
 namespace RasDashboard.Areas.Identity.Data;
 
@@ -15,7 +14,7 @@ public class RasDashboardContext : IdentityDbContext<Employee>
     public DbSet<Employee> Employees { get; set; }
     public DbSet<TaskItem> TaskItems { get; set; }
     public DbSet<Room> Rooms { get; set; }
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<EmployeeTask> EmployeeTasks { get; set; }
     private readonly IConfiguration _configuration;
 
     public RasDashboardContext(DbContextOptions<RasDashboardContext> options, IConfiguration configuration) : base(options)
@@ -69,18 +68,18 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 }
             }
 
-            // Seed Task data
-            if (!context.Set<Task>().Any())
+            // Seed EmployeeTask data
+            if (!context.Set<EmployeeTask>().Any())
             {
-                context.Set<Task>().AddRange(
-                    new Task { Name = "Fast Check", Description = "To be clarified later." },
-                    new Task { Name = "Cleaning Check", Description = "To be clarified later." },
-                    new Task { Name = "Detailed Check", Description = "To be clarified later." },
-                    new Task { Name = "Unexpected Visit", Description = "To be clarified later." },
-                    new Task { Name = "Thermal Bath Control", Description = "To be clarified later." },
-                    new Task { Name = "Nuki Battery Change", Description = "To be clarified later." },
-                    new Task { Name = "Shopping", Description = "To be clarified later." },
-                    new Task { Name = "Office Work", Description = "To be clarified later." }
+                context.Set<EmployeeTask>().AddRange(
+                    new EmployeeTask { Name = "Fast Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Cleaning Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Detailed Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Unexpected Visit", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Thermal Bath Control", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Nuki Battery Change", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Shopping", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Office Work", Description = "To be clarified later." }
                 );
                 context.SaveChanges();
             }
@@ -130,18 +129,18 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 }
             }
 
-            // Seed Task data
-            if (!await context.Set<Task>().AnyAsync(cancellationToken))
+            // Seed EmployeeTask data
+            if (!await context.Set<EmployeeTask>().AnyAsync(cancellationToken))
             {
-                await context.Set<Task>().AddRangeAsync(
-                    new Task { Name = "Fast Check", Description = "To be clarified later." },
-                    new Task { Name = "Cleaning Check", Description = "To be clarified later." },
-                    new Task { Name = "Detailed Check", Description = "To be clarified later." },
-                    new Task { Name = "Unexpected Visit", Description = "To be clarified later." },
-                    new Task { Name = "Thermal Bath Control", Description = "To be clarified later." },
-                    new Task { Name = "Nuki Battery Change", Description = "To be clarified later." },
-                    new Task { Name = "Shopping", Description = "To be clarified later." },
-                    new Task { Name = "Office Work", Description = "To be clarified later." }
+                await context.Set<EmployeeTask>().AddRangeAsync(
+                    new EmployeeTask { Name = "Fast Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Cleaning Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Detailed Check", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Unexpected Visit", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Thermal Bath Control", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Nuki Battery Change", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Shopping", Description = "To be clarified later." },
+                    new EmployeeTask { Name = "Office Work", Description = "To be clarified later." }
                 );
                 await context.SaveChangesAsync(cancellationToken);
             }

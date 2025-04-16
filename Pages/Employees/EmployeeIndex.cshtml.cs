@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RasDashboard.DTOs;
 using RasDashboard.DTOs.Rooms;
 using RasDashboard.Interfaces;
@@ -11,6 +12,8 @@ namespace RasDashboard.Pages.Employees
         private readonly ITaskService _taskService;
         public required List<RoomDto> Rooms { get; set; }
         public required List<TaskDto> Tasks { get; set; }
+        
+        public bool EmployeeHasCurrentTask { get; set; } = false;
         public EmployeeIndexModel(IRoomsService roomsService, ITaskService taskService)
         {
             _taskService = taskService;
