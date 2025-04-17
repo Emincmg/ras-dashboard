@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace RasDashboard.DTOs;
 
 public class TaskDto
@@ -9,7 +11,9 @@ public class TaskDto
     public DateTime? UpdatedDate { get; set; }
 
     public DateTime? DeletedDate { get; set; }
-    public required string Name { get; set; } 
-    public required string Description { get; set; } 
-    public List<TaskItemDto> TaskItems { get; set; } = new List<TaskItemDto>();
+    [MaxLength(255)]
+    public string Name { get; set; } = string.Empty;
+    [MaxLength(1000)]
+    public string Description { get; set; } = string.Empty;
+    public List<TaskItemDto> TaskItems { get; set; } = [];
 }

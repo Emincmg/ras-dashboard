@@ -9,4 +9,8 @@ public interface IRoomsService
     public List<RoomDto> GetAllRooms();
 
     public async void ImportRooms(){}
+    
+    public RoomDto GetRoomById(int id){ return new RoomDto(); }
+
+    public async Task<RoomDto> GetRoomByIdAsync(int id){ return await Task.FromResult(new RoomDto()); }
 }

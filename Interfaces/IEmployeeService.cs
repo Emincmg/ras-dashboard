@@ -4,9 +4,9 @@ namespace RasDashboard.Interfaces;
 
 public interface IEmployeeService
 {
-    EmployeeDto? GetEmployeeById(int id);
+    EmployeeDto? GetEmployeeById(string id);
     List<EmployeeDto> GetAllEmployees();
     void AddEmployee(EmployeeDto employee);
     void UpdateEmployee(EmployeeDto employee);
-    void DeleteEmployee(int id);
+    void DeleteEmployee(string id);
 }

@@ -29,11 +29,23 @@ public class TaskService : ITaskService
     /// <summary>
     /// Gets current task for the logged-in employee.
     /// </summary>
+    /// <param name="employeeId"> ID of the employee that their id sent.</param>
     /// <returns></returns>
-    public TaskDto GetCurrentTask()
+    public TaskItemDto GetCurrentTask(string employeeId)
     {
-        var task = _taskRepository.GetCurrentTaskAsync();
-        return _mapper.Map<TaskDto>(task);
+        var task = _taskRepository.GetCurrentTaskAsync(employeeId);
+        return _mapper.Map<TaskItemDto>(task);
+    }
+    
+    /// <summary>
+    /// Gets current task for the logged-in employee asynchronously.
+    /// </summary>
+    /// <param name="employeeId"> ID of the employee that their id sent</param>
+    /// <returns></returns>
+    public Task<TaskItemDto> GetCurrentTaskAsync(string employeeId)
+    {
+        var task = _taskRepository.GetCurrentTaskAsync(employeeId);
+        return Task.FromResult(_mapper.Map<TaskItemDto>(task));
     }
     
     /// <summary>
@@ -44,6 +56,7 @@ public class TaskService : ITaskService
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto)
     {
         var taskItem = _mapper.Map<TaskItem>(taskItemDto);
+        
         _taskRepository.CreateTask(taskItem);
         
         return Task.FromResult(taskItemDto);

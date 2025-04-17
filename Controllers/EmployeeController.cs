@@ -14,7 +14,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<EmployeeDto?> GetEmployeeById(int id)
+    public ActionResult<EmployeeDto?> GetEmployeeById(string id)
     {
         var employee = _employeeService.GetEmployeeById(id);
         if (employee == null)
@@ -52,7 +52,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteEmployee(int id)
+    public ActionResult DeleteEmployee(string id)
     {
         _employeeService.DeleteEmployee(id);
         return NoContent();

@@ -9,5 +9,5 @@ public interface ITaskRepository
     public Task<TaskItem> CreateTask(TaskItem taskItem);
     public Task<TaskItem> UpdateTask(TaskItem taskItem);
     public Task<TaskItem> DeleteTask(int id);
-    public Task<TaskItem?> GetCurrentTaskAsync();
+    public Task<TaskItem?> GetCurrentTaskAsync(string employeeId);
 }

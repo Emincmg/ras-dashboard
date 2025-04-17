@@ -17,7 +17,8 @@ public class TaskController : Controller
         _taskService = taskService;
     }
     
-    public async Task<IActionResult> CreateTask([FromBody] TaskItemDto taskDto)
+    [HttpPost]
+    public async Task<IActionResult> CreateTask(TaskItemDto taskDto)
     {
         ValidationResult result = await _validator.ValidateAsync(taskDto);
 
@@ -28,6 +29,6 @@ public class TaskController : Controller
 
         await _taskService.CreateTask(taskDto);
 
-        return Ok("EmployeeTask created successfully!");
+        return RedirectToPage("/Employees/EmployeeIndex");
     }
 }

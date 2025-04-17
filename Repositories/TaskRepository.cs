@@ -10,13 +10,11 @@ namespace RasDashboard.Repositories;
 public class TaskRepository : ITaskRepository
 {
     private readonly RasDashboardContext _dbContext;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    public TaskRepository(RasDashboardContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public TaskRepository(RasDashboardContext dbContext)
     {
         _dbContext = dbContext;
-        _httpContextAccessor = httpContextAccessor;
-
     }
+    
     /// <summary>
     /// Gets all the employee tasks from the database.
     /// </summary>
@@ -43,18 +41,12 @@ public class TaskRepository : ITaskRepository
     /// <summary>
     /// Gets the current task for the logged-in employee.
     /// </summary>
+    /// <param name="employeeId"> ID of the employee that its task will be retrieved. </param>
     /// <returns></returns>
-    public async Task<TaskItem?> GetCurrentTaskAsync()
+    public async Task<TaskItem?> GetCurrentTaskAsync(string employeeId)
     {
-        var userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (string.IsNullOrEmpty(userId))
-        {
-            return null; 
-        }
-
         return await _dbContext.TaskItems
-            .Where(t => t.Employee !=null && t.Employee.Id == userId && t.IsCurrent)
+            .Where(t => t.Employee !=null && t.Employee.Id == employeeId && t.IsCurrent)
             .FirstOrDefaultAsync();
     }
     
