@@ -13,7 +13,6 @@ public class TaskItemDto
     public string Description { get; set; } = string.Empty;
     public bool IsCompleted { get; set; } = false;
     public bool IsCurrent { get; set; } = false;
-    public int RoomId { get; set; } = 0;
     public DateTime DueDate { get; set; } = DateTime.Now;
     public DateTime StartTime { get; set; } = DateTime.Now;
     public DateTime EndTime { get; set; } = DateTime.Now;

@@ -36,7 +36,7 @@
             <form class="row gy-3 needs-validation" method="post" enctype="multipart/form-data" novalidate>
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
-                    <select class="form-select-lg" name="TaskDto.RoomId" required>
+                    <select class="form-select-lg" name="TaskItem.RoomId" required>
                         <option disabled selected>Select Appartment</option>
                         @foreach (var room in Model.Rooms)
                         {
@@ -54,7 +54,7 @@
                         @foreach (var task in Model.Tasks)
                         {
                             <div class="form-switch switch-primary d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="checkbox" name="TaskDto.TaskIds" value="@task.Id" id="switch-@task.Id" />
+                                <input class="form-check-input" type="checkbox" name="TaskItem.Task.Id" value="@task.Id" id="switch-@task.Id" />
                                 <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch-@task.Id">@task.Name</label>
                             </div>
                         }
@@ -67,7 +67,7 @@
                 <environment include="Development">
                     <div class="col-md-6">
                         <label class="form-label">Media </label>
-                        <input class="form-control" type="file" name="TaskDto.MediaFiles" multiple />
+                        <input class="form-control" type="file" name="TaskItem.MediaFiles" multiple />
                         <div class="invalid-feedback">
                             Please choose a file.
                         </div>

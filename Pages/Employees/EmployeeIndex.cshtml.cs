@@ -21,6 +21,8 @@ namespace RasDashboard.Pages.Employees
         [BindProperty]
         public TaskItemDto? TaskItem { get; set; }
         public bool EmployeeHasCurrentTask { get; set; } = false;
+        public List<Guid> TaskIds { get; set; } = [];
+        public List<int> RoomIds { get; set; } = [];
         public EmployeeIndexModel(IRoomsService roomsService, ITaskService taskService, UserManager<Employee> userManager, 
             IHttpContextAccessor httpContextAccessor, IEmployeeService employeeService)
         {
@@ -30,8 +32,12 @@ namespace RasDashboard.Pages.Employees
             Rooms = _roomsService.GetAllRooms();
             Tasks = _taskService.GetAllTasks();
             _httpContextAccessor = httpContextAccessor;
-            _employee = _employeeService.GetEmployeeById(httpContextAccessor.HttpContext?.User?.Identity?.Name!);
-            
+            var userId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    
+            if (!string.IsNullOrEmpty(userId))
+            {
+                _employee = _employeeService.GetEmployeeById(userId);
+            }
         }
         
         public void OnGet()
@@ -59,9 +65,18 @@ namespace RasDashboard.Pages.Employees
                 return Page();
             }
             
-            // Add the room to the task item before sending to service
-            var room = await _roomsService.GetRoomByIdAsync(TaskItem.RoomId);
-            TaskItem.Rooms.Add(room);
+            foreach (var id in TaskIds)
+            {
+                var task = await _taskService.GetTaskByIdAsync(id);
+                TaskItem.Tasks.Add(task);
+            }
+            
+            // Add the rooms to the task item before sending to service
+            foreach (var roomId in RoomIds)
+            {
+                var room = await _roomsService.GetRoomByIdAsync(roomId);
+                TaskItem.Rooms.Add(room);
+            }
             
             // Add the employee to the task item before sending to service
             if (_employee == null)

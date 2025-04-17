@@ -1,7 +1,5 @@
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using RasDashboard.Areas.Identity.Data;
-using RasDashboard.DTOs;
 using RasDashboard.Interfaces;
 using RasDashboard.Models;
 
@@ -41,15 +39,52 @@ public class TaskRepository : ITaskRepository
     /// <summary>
     /// Gets the current task for the logged-in employee.
     /// </summary>
-    /// <param name="employeeId"> ID of the employee that its task will be retrieved. </param>
+    /// <param name="employeeId"> ID of the employee.</param>
     /// <returns></returns>
-    public async Task<TaskItem?> GetCurrentTaskAsync(string employeeId)
+    public TaskItem? GetCurrentTask(string employeeId)
     {
-        return await _dbContext.TaskItems
-            .Where(t => t.Employee !=null && t.Employee.Id == employeeId && t.IsCurrent)
-            .FirstOrDefaultAsync();
+        return _dbContext.TaskItems
+            .FirstOrDefault(t => t.Employee !=null && t.Employee.Id == employeeId && t.IsCurrent);
     }
     
+    /// <summary>
+    /// Gets the current task for the logged-in employee.
+    /// </summary>
+    /// <param name="employeeId"> ID of the employee that its task will be retrieved. </param>
+    /// <returns></returns>
+    public async Task<TaskItem>? GetCurrentTaskAsync(string employeeId)
+    {
+        var currentTask =  await _dbContext.TaskItems
+            .Where(t => t.Employee !=null && t.Employee.Id == employeeId && t.IsCurrent)
+            .FirstOrDefaultAsync();
+        if (currentTask == null)
+        {
+            throw new NullReferenceException("Task item not found");
+        }
+
+        return currentTask;
+    }
+
+    /// <summary>
+    /// Return a task item by its ID.
+    /// </summary>
+    /// <param name="id">ID of the task item</param>
+    /// <returns></returns>
+    public TaskItem? GetTaskById(Guid id)
+    {
+        return _dbContext.TaskItems.Find(id);
+    }
+
+    /// <summary>
+    /// Return a task item by its ID asynchronously.
+    /// </summary>
+    /// <param name="id">ID of the task item</param>
+    /// <returns></returns>
+    public async Task<TaskItem?> GetTaskByIdAsync(Guid id)
+    {
+       return await _dbContext.TaskItems.FindAsync(id);
+    }
+
     /// <summary>
     /// Asynchronously creates a new task item in the database.
     /// </summary>

@@ -30,11 +30,11 @@ public class TaskService : ITaskService
     /// Gets current task for the logged-in employee.
     /// </summary>
     /// <param name="employeeId"> ID of the employee that their id sent.</param>
-    /// <returns></returns>
-    public TaskItemDto GetCurrentTask(string employeeId)
+    /// <returns>Null if no current task, Current task if not null.</returns>
+    public TaskItemDto? GetCurrentTask(string employeeId)
     {
-        var task = _taskRepository.GetCurrentTaskAsync(employeeId);
-        return _mapper.Map<TaskItemDto>(task);
+        var task = _taskRepository.GetCurrentTask(employeeId);
+        return task == null ? null : _mapper.Map<TaskItemDto>(task);
     }
     
     /// <summary>
@@ -42,12 +42,48 @@ public class TaskService : ITaskService
     /// </summary>
     /// <param name="employeeId"> ID of the employee that their id sent</param>
     /// <returns></returns>
-    public Task<TaskItemDto> GetCurrentTaskAsync(string employeeId)
+    public Task<TaskItemDto>? GetCurrentTaskAsync(string employeeId)
     {
         var task = _taskRepository.GetCurrentTaskAsync(employeeId);
+        if (task == null)
+        {
+            return null;
+        }
         return Task.FromResult(_mapper.Map<TaskItemDto>(task));
     }
+
+    /// <summary>
+    /// Return a task item by its ID.
+    /// </summary>
+    /// <param name="id">ID of the task</param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException">Thrown if no task item found by given ID</exception>
+    public TaskDto GetTaskById(Guid id)
+    {
+       var task = _taskRepository.GetTaskById(id);
+       if (task == null)
+       {
+           throw new NullReferenceException("Task not found");
+       }
+       return _mapper.Map<TaskDto>(task);
+    }
     
+    /// <summary>
+    /// Return a task item by its ID asynchronously.
+    /// </summary>
+    /// <param name="id">ID Of the task</param>
+    /// <returns></returns>
+    /// <exception cref="NullReferenceException"></exception>
+    public Task<TaskDto> GetTaskByIdAsync(Guid id)
+    {
+        var task = _taskRepository.GetTaskByIdAsync(id);
+        if (task == null)
+        {
+            throw new NullReferenceException("Task not found");
+        }
+        return Task.FromResult(_mapper.Map<TaskDto>(task));
+    }
+
     /// <summary>
     /// Creates a task item in the database. Endpoint used by employees when they create a task.
     /// </summary>

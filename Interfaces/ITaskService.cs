@@ -9,6 +9,8 @@ public interface ITaskService
     public Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto);
     public Task<TaskItemDto> DeleteTask(int id);
 
-    public TaskItemDto GetCurrentTask(string employeeId);
-    public async Task<TaskItemDto> GetCurrentTaskAsync(string employeeId){ return await Task.FromResult(new TaskItemDto()); }
+    public TaskItemDto? GetCurrentTask(string employeeId);
+    public async Task<TaskItemDto>? GetCurrentTaskAsync(string employeeId){ return await Task.FromResult(new TaskItemDto()); }
+    public TaskDto GetTaskById(Guid id);
+    public Task<TaskDto> GetTaskByIdAsync(Guid id){ return Task.FromResult(new TaskDto()); }
 }
