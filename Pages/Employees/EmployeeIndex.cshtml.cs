@@ -64,7 +64,7 @@ namespace RasDashboard.Pages.Employees
             {
                 return Page();
             }
-            
+            // Add the tasks to the task item before sending to service
             foreach (var id in TaskIds)
             {
                 var task = await _taskService.GetTaskByIdAsync(id);
@@ -83,7 +83,7 @@ namespace RasDashboard.Pages.Employees
             {
                 return Page(); 
             }
-            TaskItem.Employees.Add(_employee);
+            TaskItem.Employees.Add(new EmployeeDto { Id = _employee.Id });
             
             // Set the task item properties
             TaskItem.IsCurrent = true;

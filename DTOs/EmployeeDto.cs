@@ -9,9 +9,9 @@ public class EmployeeDto
     public DateTime CheckInTime { get; set; }
     public DateTime CheckOutTime { get; set; }
     public int LeaveStatus { get; set; }
-    public required string Position { get; set; }
-    public required string Department { get; set; }
-    public required string Email { get; set; }
-    public required string PhoneNumber { get; set; }
+    public string? Position { get; set; }
+    public string? Department { get; set; }
+    public string? Email { get; set; }
+    public string? PhoneNumber { get; set; }
     public  List<TaskItemDto>? TaskItems { get; set; }
 }

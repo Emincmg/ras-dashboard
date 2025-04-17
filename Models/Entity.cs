@@ -9,5 +9,10 @@ public abstract class Entity
     public DateTime? UpdatedDate { get; set; } 
 
     public DateTime? DeletedDate { get; set; }
+
+    public Entity()
+    {
+        CreatedDate = DateTime.UtcNow;
+    }
     
 }

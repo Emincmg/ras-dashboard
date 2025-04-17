@@ -93,8 +93,14 @@ public class TaskService : ITaskService
     {
         var taskItem = _mapper.Map<TaskItem>(taskItemDto);
         
+        taskItem.Rooms = taskItemDto.Rooms.Select(r => new Room { Id = r.Id, City = r.City, Name = r.Name, Street = r.Street}).ToList();
+        taskItem.Tasks = taskItemDto.Tasks.Select(t => new EmployeeTask { Id = t.Id , Name = t.Name, Description = t.Description}).ToList();
+    
+        var employeeId = taskItemDto.Employees.First().Id;
+        taskItem.Employee = new Employee { Id = employeeId };
+
         _taskRepository.CreateTask(taskItem);
-        
+
         return Task.FromResult(taskItemDto);
     }
 
