@@ -18,12 +18,28 @@ public class RoomsService : IRoomsService
         _mapper = mapper;
     }
 
+    /// <inheritdoc />
     public async Task<List<RoomDto>> GetAllRoomsAsync()
     {
         var rooms = await _roomRepository.GetAllRoomsAsync();
         return _mapper.Map<List<RoomDto>>(rooms);
     }
 
+    /// <inheritdoc />
+    public RoomDto GetRoomById(int id)
+    {
+        var room = _roomRepository.GetRoomById(id);
+        return _mapper.Map<RoomDto>(room);
+    }
+    
+    /// <inheritdoc />
+    public async Task<RoomDto> GetRoomByIdAsync(int id)
+    {
+        var room = await _roomRepository.GetRoomByIdAsync(id);
+        return _mapper.Map<RoomDto>(room);
+    }
+
+    /// <inheritdoc />
     public List<RoomDto> GetAllRooms()
     {
         var rooms = _roomRepository.GetAllRooms();

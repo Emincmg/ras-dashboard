@@ -37,10 +37,10 @@
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
                     <select class="form-select-lg" name="TaskItem.RoomId" required>
-                        <option disabled selected>Select Appartment</option>
+                        <option disabled>Select Appartment</option>
                         @foreach (var room in Model.Rooms)
                         {
-                            <option value="@room.Id">@room.Name</option>
+                            <option value="@room.Id" selected="@(Model.TaskItem?.RoomIds.Contains(room.Id) == true ? "selected" : "")">@room.Name</option>
                         }
                     </select>
                     <div class="valid-feedback">
@@ -49,12 +49,13 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">EmployeeTask</label>
+                    <label class="form-label">Task</label>
                     <div class="d-flex align-items-center flex-wrap gap-28">
                         @foreach (var task in Model.Tasks)
                         {
                             <div class="form-switch switch-primary d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="checkbox" name="TaskItem.Task.Id" value="@task.Id" id="switch-@task.Id" />
+                                <input class="form-check-input" type="checkbox" name="TaskItem.TaskIds" value="@task.Id" id="switch-@task.Id"
+                                       @(Model.TaskItem?.TaskIds.Contains(task.Id) == true ? "checked" : "") />
                                 <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch-@task.Id">@task.Name</label>
                             </div>
                         }
@@ -67,16 +68,26 @@
                 <environment include="Development">
                     <div class="col-md-6">
                         <label class="form-label">Media </label>
+                        @if (Model.TaskItem?.MediaFiles != null && Model.TaskItem.MediaFiles.Any())
+                        {
+                            <ul>
+                                @foreach (var file in Model.TaskItem.MediaFiles)
+                                {
+                                    <li>@file.FileName</li>
+                                }
+                            </ul>
+                        }
                         <input class="form-control" type="file" name="TaskItem.MediaFiles" multiple />
                         <div class="invalid-feedback">
                             Please choose a file.
                         </div>
                     </div>
                 </environment>
-
+                
                 <div class="col-12 text-center">
-                    <button class="btn btn-danger-600" type="submit">
-                        @(Model.EmployeeHasCurrentTask ? "Stop" : "Start")
+                    <button class="btn btn-success" type="submit" name="action" value="update">Update</button>
+                    <button class="btn btn-danger-600" type="submit" name="action" value="startStop">
+                        @(Model.TaskItem?.IsCurrent == true ? "Stop" : "Start")
                     </button>
                 </div>
             </form>

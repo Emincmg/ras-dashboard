@@ -144,7 +144,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 );
                 await context.SaveChangesAsync(cancellationToken);
             }
-        });
+        })
+        .EnableSensitiveDataLogging();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

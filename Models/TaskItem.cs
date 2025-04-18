@@ -20,4 +20,5 @@ public class TaskItem : Entity
     public List<EmployeeTask>? Tasks { get; set; } 
     public List<Room>? Rooms { get; set; }
     public Employee? Employee { get; set; }
+    public string EmployeeId { get; set; } = string.Empty;
 }

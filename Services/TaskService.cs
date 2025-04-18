@@ -9,39 +9,28 @@ public class TaskService : ITaskService
 {
     private readonly IMapper _mapper;
     private readonly ITaskRepository _taskRepository;
-    
+
     public TaskService(IMapper mapper, ITaskRepository taskRepository)
     {
         _mapper = mapper;
         _taskRepository = taskRepository;
     }
 
-    /// <summary>
-    /// Gets all the tasks from the database.
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     public List<TaskDto> GetAllTasks()
     {
         var tasks = _taskRepository.GetAllTasks();
         return _mapper.Map<List<TaskDto>>(tasks);
     }
 
-    /// <summary>
-    /// Gets current task for the logged-in employee.
-    /// </summary>
-    /// <param name="employeeId"> ID of the employee that their id sent.</param>
-    /// <returns>Null if no current task, Current task if not null.</returns>
+    /// <inheritdoc />
     public TaskItemDto? GetCurrentTask(string employeeId)
     {
         var task = _taskRepository.GetCurrentTask(employeeId);
         return task == null ? null : _mapper.Map<TaskItemDto>(task);
     }
-    
-    /// <summary>
-    /// Gets current task for the logged-in employee asynchronously.
-    /// </summary>
-    /// <param name="employeeId"> ID of the employee that their id sent</param>
-    /// <returns></returns>
+
+    /// <inheritdoc />
     public Task<TaskItemDto>? GetCurrentTaskAsync(string employeeId)
     {
         var task = _taskRepository.GetCurrentTaskAsync(employeeId);
@@ -49,31 +38,23 @@ public class TaskService : ITaskService
         {
             return null;
         }
+
         return Task.FromResult(_mapper.Map<TaskItemDto>(task));
     }
 
-    /// <summary>
-    /// Return a task item by its ID.
-    /// </summary>
-    /// <param name="id">ID of the task</param>
-    /// <returns></returns>
-    /// <exception cref="NullReferenceException">Thrown if no task item found by given ID</exception>
+    /// <inheritdoc />
     public TaskDto GetTaskById(Guid id)
     {
-       var task = _taskRepository.GetTaskById(id);
-       if (task == null)
-       {
-           throw new NullReferenceException("Task not found");
-       }
-       return _mapper.Map<TaskDto>(task);
+        var task = _taskRepository.GetTaskById(id);
+        if (task == null)
+        {
+            throw new NullReferenceException("Task not found");
+        }
+
+        return _mapper.Map<TaskDto>(task);
     }
-    
-    /// <summary>
-    /// Return a task item by its ID asynchronously.
-    /// </summary>
-    /// <param name="id">ID Of the task</param>
-    /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
+
+    /// <inheritdoc />
     public Task<TaskDto> GetTaskByIdAsync(Guid id)
     {
         var task = _taskRepository.GetTaskByIdAsync(id);
@@ -81,47 +62,30 @@ public class TaskService : ITaskService
         {
             throw new NullReferenceException("Task not found");
         }
+
         return Task.FromResult(_mapper.Map<TaskDto>(task));
     }
 
-    /// <summary>
-    /// Creates a task item in the database. Endpoint used by employees when they create a task.
-    /// </summary>
-    /// <param name="taskItemDto">Task item DTO instance that will be converted and will be saved to the database.</param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto)
     {
-        var taskItem = _mapper.Map<TaskItem>(taskItemDto);
-        
-        taskItem.Rooms = taskItemDto.Rooms.Select(r => new Room { Id = r.Id, City = r.City, Name = r.Name, Street = r.Street}).ToList();
-        taskItem.Tasks = taskItemDto.Tasks.Select(t => new EmployeeTask { Id = t.Id , Name = t.Name, Description = t.Description}).ToList();
-    
-        var employeeId = taskItemDto.Employees.First().Id;
-        taskItem.Employee = new Employee { Id = employeeId };
+        var taskItem = _mapper.Map<TaskItemDto,TaskItem>(taskItemDto);
 
         _taskRepository.CreateTask(taskItem);
 
         return Task.FromResult(taskItemDto);
     }
 
-    /// <summary>
-    /// Updates a task in the database.
-    /// </summary>
-    /// <param name="taskItemDto">Task item DTO instance that will be converted and will be updated.</param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <inheritdoc />
     public Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto)
     {
-        throw new NotImplementedException();
+        var taskItem = _mapper.Map<TaskItemDto,TaskItem>(taskItemDto);
+        _taskRepository.UpdateTask(taskItem);
+        
+        return Task.FromResult(taskItemDto);
     }
 
-    /// <summary>
-    /// Delete a task item from database. Not to be confused with deleting a task itself, it refers to a task item created
-    /// by an employee.
-    /// </summary>
-    /// <param name="id">ID of the task item that will be removed.</param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <inheritdoc />
     public Task<TaskItemDto> DeleteTask(int id)
     {
         throw new NotImplementedException();

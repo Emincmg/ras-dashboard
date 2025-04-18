@@ -19,14 +19,5 @@ public class TaskItemValidator : AbstractValidator<TaskItemDto>
 
         RuleFor(x => x.StartTime)
             .LessThan(x => x.EndTime).WithMessage("StartTime must be before EndTime.");
-
-        RuleFor(x => x.Tasks)
-            .NotNull().WithMessage("Tasks list cannot be null.");
-
-        RuleFor(x => x.Rooms)
-            .NotNull().WithMessage("Rooms list cannot be null.");
-
-        RuleFor(x => x.Employees)
-            .NotNull().WithMessage("Employees list cannot be null.");
     }
 }

@@ -8,6 +8,8 @@ public class EmployeeProfile: Profile
 {
     public EmployeeProfile()
     {
-        CreateMap<Employee, EmployeeDto>().ReverseMap();
+        CreateMap<Employee, EmployeeDto>();
+        CreateMap<EmployeeDto, Employee>()
+            .ForMember(dest => dest.TaskItems, opt => opt.Ignore());
     }
 }

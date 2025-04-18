@@ -4,9 +4,9 @@ namespace RasDashboard.Models;
 
 public class EmployeeTask : Entity
 {
-    [Required, MaxLength(50)]
-    public required string Name { get; set; } 
-    [Required, MaxLength(255)]
-    public required string Description { get; set; } 
+    [MaxLength(50)]
+    public string? Name { get; set; } 
+    [MaxLength(255)]
+    public string? Description { get; set; } 
     public List<TaskItem>? TaskItems { get; set; }
 }

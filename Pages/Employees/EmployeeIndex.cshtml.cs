@@ -15,7 +15,7 @@ namespace RasDashboard.Pages.Employees
         private readonly ITaskService _taskService;
         private readonly IEmployeeService _employeeService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private EmployeeDto? _employee;
+        private string? _userId;
         public required List<RoomDto> Rooms { get; set; }
         public required List<TaskDto> Tasks { get; set; }
         [BindProperty]
@@ -32,21 +32,16 @@ namespace RasDashboard.Pages.Employees
             Rooms = _roomsService.GetAllRooms();
             Tasks = _taskService.GetAllTasks();
             _httpContextAccessor = httpContextAccessor;
-            var userId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-    
-            if (!string.IsNullOrEmpty(userId))
-            {
-                _employee = _employeeService.GetEmployeeById(userId);
-            }
+            _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         
         public void OnGet()
         {
-            if (_employee != null)
+            if (_userId != null)
             {
-                TaskItem = _taskService.GetCurrentTask(_employee.Id);
+                TaskItem = _taskService.GetCurrentTask(_userId);
             }
-           
+            
             if (TaskItem != null)
             {
                 EmployeeHasCurrentTask = true;
@@ -57,40 +52,41 @@ namespace RasDashboard.Pages.Employees
         /// Create task item for the employee.
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string action)
         {
-            // Validate the task item
             if (!ModelState.IsValid || TaskItem == null)
             {
                 return Page();
             }
-            // Add the tasks to the task item before sending to service
-            foreach (var id in TaskIds)
+            
+            switch (action)
             {
-                var task = await _taskService.GetTaskByIdAsync(id);
-                TaskItem.Tasks.Add(task);
+                case "update":
+                    // Update the current task.
+                    await _taskService.UpdateTask(TaskItem);
+                    break;
+
+                case "startStop":
+                    // Toggle the current task state.
+                    if (TaskItem.IsCurrent)
+                    {
+                        TaskItem.IsCurrent = false;
+                        TaskItem.IsCompleted = true;
+                    }
+                    else
+                    {
+                        TaskItem.IsCurrent = true;
+                        TaskItem.IsCompleted = false;
+                    }
+                    await _taskService.UpdateTask(TaskItem);
+                    break;
+
+                default:
+                    return Page();
             }
-            
-            // Add the rooms to the task item before sending to service
-            foreach (var roomId in RoomIds)
-            {
-                var room = await _roomsService.GetRoomByIdAsync(roomId);
-                TaskItem.Rooms.Add(room);
-            }
-            
-            // Add the employee to the task item before sending to service
-            if (_employee == null)
-            {
-                return Page(); 
-            }
-            TaskItem.Employees.Add(new EmployeeDto { Id = _employee.Id });
-            
-            // Set the task item properties
-            TaskItem.IsCurrent = true;
-            TaskItem.IsCompleted = false;
-            
-            await _taskService.CreateTask(TaskItem!);
+
             return RedirectToPage("/Employees/EmployeeIndex");
         }
+
     }
 }
