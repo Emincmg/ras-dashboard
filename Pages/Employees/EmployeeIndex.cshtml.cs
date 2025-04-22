@@ -32,21 +32,26 @@ namespace RasDashboard.Pages.Employees
             Rooms = _roomsService.GetAllRooms();
             Tasks = _taskService.GetAllTasks();
             _httpContextAccessor = httpContextAccessor;
-            _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
         
         public void OnGet()
         {
+            _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    
             if (_userId != null)
             {
                 TaskItem = _taskService.GetCurrentTask(_userId);
+                EmployeeHasCurrentTask = TaskItem != null;
             }
-            
-            if (TaskItem != null)
+            else
             {
-                EmployeeHasCurrentTask = true;
+                TaskItem = new TaskItemDto(); 
             }
+
+            Rooms = _roomsService.GetAllRooms();
+            Tasks = _taskService.GetAllTasks();
         }
+
 
         /// <summary>
         /// Create task item for the employee.
@@ -66,7 +71,7 @@ namespace RasDashboard.Pages.Employees
                     await _taskService.UpdateTask(TaskItem);
                     break;
 
-                case "startStop":
+                case "stop":
                     // Toggle the current task state.
                     if (TaskItem.IsCurrent)
                     {
@@ -80,7 +85,11 @@ namespace RasDashboard.Pages.Employees
                     }
                     await _taskService.UpdateTask(TaskItem);
                     break;
-
+                
+                case "create":
+                    await _taskService.CreateTask(TaskItem);
+                    break;
+                
                 default:
                     return Page();
             }

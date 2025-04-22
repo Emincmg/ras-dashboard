@@ -27,6 +27,7 @@ public class TaskService : ITaskService
     public TaskItemDto? GetCurrentTask(string employeeId)
     {
         var task = _taskRepository.GetCurrentTask(employeeId);
+  
         return task == null ? null : _mapper.Map<TaskItemDto>(task);
     }
 
@@ -69,7 +70,7 @@ public class TaskService : ITaskService
     /// <inheritdoc />
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto)
     {
-        var taskItem = _mapper.Map<TaskItemDto,TaskItem>(taskItemDto);
+        var taskItem = _mapper.Map<TaskItem>(taskItemDto);
 
         _taskRepository.CreateTask(taskItem);
 
@@ -79,8 +80,13 @@ public class TaskService : ITaskService
     /// <inheritdoc />
     public Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto)
     {
-        var taskItem = _mapper.Map<TaskItemDto,TaskItem>(taskItemDto);
-        _taskRepository.UpdateTask(taskItem);
+         var taskItem = _taskRepository.GetTaskById(taskItemDto.Id);
+         if (taskItem == null)
+         {
+             throw new NullReferenceException("Task not found");
+         }
+         taskItem = _mapper.Map(taskItemDto, taskItem);
+         _taskRepository.UpdateTask(taskItem);
         
         return Task.FromResult(taskItemDto);
     }

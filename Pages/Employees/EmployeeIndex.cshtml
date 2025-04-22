@@ -34,6 +34,9 @@
         </div>
         <div class="card-body">
             <form class="row gy-3 needs-validation" method="post" enctype="multipart/form-data" novalidate>
+                <input type="hidden" name="TaskItem.Id" value="@Model.TaskItem?.Id" />
+                <input type="hidden" name="TaskItem.IsCurrent" value="@Model.TaskItem?.IsCurrent.ToString().ToLower()" />
+                <input type="hidden" name="TaskItem.IsCompleted" value="@Model.TaskItem?.IsCompleted.ToString().ToLower()" />
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
                     <select class="form-select-lg" name="TaskItem.RoomId" required>
@@ -55,7 +58,7 @@
                         {
                             <div class="form-switch switch-primary d-flex align-items-center gap-3">
                                 <input class="form-check-input" type="checkbox" name="TaskItem.TaskIds" value="@task.Id" id="switch-@task.Id"
-                                       @(Model.TaskItem?.TaskIds.Contains(task.Id) == true ? "checked" : "") />
+                                       @(Model.TaskItem?.TaskIds.Contains(task.Id) == true ? "checked" : "")/>
                                 <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch-@task.Id">@task.Name</label>
                             </div>
                         }
@@ -77,19 +80,25 @@
                                 }
                             </ul>
                         }
-                        <input class="form-control" type="file" name="TaskItem.MediaFiles" multiple />
+                        <input class="form-control" type="file" name="TaskItem.MediaFiles" multiple/>
                         <div class="invalid-feedback">
                             Please choose a file.
                         </div>
                     </div>
                 </environment>
-                
+
                 <div class="col-12 text-center">
-                    <button class="btn btn-success" type="submit" name="action" value="update">Update</button>
-                    <button class="btn btn-danger-600" type="submit" name="action" value="startStop">
-                        @(Model.TaskItem?.IsCurrent == true ? "Stop" : "Start")
-                    </button>
+                    @if (Model.EmployeeHasCurrentTask)
+                    {
+                        <button class="btn btn-success" type="submit" name="action" value="update">Update</button>
+                        <button class="btn btn-danger-600" type="submit" name="action" value="stop">Stop</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" type="submit" name="action" value="create">Start</button>
+                    }
                 </div>
+
             </form>
 
         </div>

@@ -32,18 +32,18 @@ public class TaskRepository : ITaskRepository
     public TaskItem? GetCurrentTask(string employeeId)
     {
         return _dbContext.TaskItems
-            .FirstOrDefault(t => t.Employee != null && t.Employee.Id == employeeId && t.IsCurrent);
+            .FirstOrDefault(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent);
     }
 
     /// <inheritdoc />
     public async Task<TaskItem>? GetCurrentTaskAsync(string employeeId)
     {
         var currentTask = await _dbContext.TaskItems
-            .Where(t => t.Employee != null && t.Employee.Id == employeeId && t.IsCurrent)
+            .Where(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent)
             .FirstOrDefaultAsync();
         if (currentTask == null)
         {
-            throw new NullReferenceException("Task item not found");
+            throw new NullReferenceException("Task item not found by repository.");
         }
 
         return currentTask;
@@ -72,9 +72,23 @@ public class TaskRepository : ITaskRepository
     /// <inheritdoc />
     public Task<TaskItem> UpdateTask(TaskItem taskItem)
     {
-        _dbContext.TaskItems.Update(taskItem);
+        var existingTask = _dbContext.TaskItems
+            .Include(t => t.Tasks)
+            .Include(t => t.Rooms)
+            .FirstOrDefault(t => t.Id == taskItem.Id);
+
+        if (existingTask == null)
+        {
+            throw new InvalidOperationException("Task not found");
+        }
+        
+        existingTask.Tasks = taskItem.Tasks;
+        existingTask.Rooms = taskItem.Rooms;
+        existingTask.UpdatedDate = DateTime.Now;
+
         _dbContext.SaveChanges();
-        return Task.FromResult(taskItem);
+
+        return Task.FromResult(existingTask);
     }
 
     /// <inheritdoc />
