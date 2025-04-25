@@ -17,9 +17,9 @@ public class TaskItemDto
     public DateTime EndTime { get; set; } = DateTime.Now;
     [ForeignKey("EmployeeId")]
     public string? EmployeeId { get; set; }
-    public List<Guid> TaskIds { get; set; } = new();
-    public List<int> RoomIds { get; set; } = new();
+    public List<Guid> TaskIds { get; set; } = [];
+    public List<int> RoomIds { get; set; } = [];
     
-    public List<IFormFile> MediaFiles { get; set; } = new();
+    public List<IFormFile> MediaFiles { get; set; } = [];
 }
 

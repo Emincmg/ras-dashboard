@@ -71,7 +71,7 @@ public class TaskService : ITaskService
     public Task<TaskItemDto> CreateTask(TaskItemDto taskItemDto)
     {
         var taskItem = _mapper.Map<TaskItem>(taskItemDto);
-
+        
         _taskRepository.CreateTask(taskItem);
 
         return Task.FromResult(taskItemDto);

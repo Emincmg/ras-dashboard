@@ -23,6 +23,14 @@ public class TaskRepository : ITaskRepository
     /// <inheritdoc />
     public Task<TaskItem> CreateTask(TaskItem taskItem)
     {
+        taskItem.Tasks =  _dbContext.EmployeeTasks
+            .Where(et => taskItem.Tasks.Select(t => t.Id).Contains(et.Id))
+            .ToList();
+
+        taskItem.Rooms =  _dbContext.Rooms
+            .Where(r => taskItem.Rooms.Select(t => t.Id).Contains(r.Id))
+            .ToList();
+
         _dbContext.TaskItems.Add(taskItem);
         _dbContext.SaveChanges();
         return Task.FromResult(taskItem);
@@ -32,6 +40,8 @@ public class TaskRepository : ITaskRepository
     public TaskItem? GetCurrentTask(string employeeId)
     {
         return _dbContext.TaskItems
+            .Include(t => t.Tasks)
+            .Include(t => t.Rooms)
             .FirstOrDefault(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent);
     }
 
@@ -39,6 +49,8 @@ public class TaskRepository : ITaskRepository
     public async Task<TaskItem>? GetCurrentTaskAsync(string employeeId)
     {
         var currentTask = await _dbContext.TaskItems
+            .Include(t => t.Tasks)
+            .Include(t => t.Rooms)
             .Where(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent)
             .FirstOrDefaultAsync();
         if (currentTask == null)
@@ -76,14 +88,27 @@ public class TaskRepository : ITaskRepository
             .Include(t => t.Tasks)
             .Include(t => t.Rooms)
             .FirstOrDefault(t => t.Id == taskItem.Id);
-
+        
         if (existingTask == null)
         {
             throw new InvalidOperationException("Task not found");
         }
-        
+
+        if (existingTask.Tasks != null && existingTask.Tasks.Count > 0)
+        {
+            existingTask.Tasks.Clear();
+        }
         existingTask.Tasks = taskItem.Tasks;
-        existingTask.Rooms = taskItem.Rooms;
+
+        if (taskItem.Rooms is { Count: > 0 })
+        {
+            var roomIds = taskItem.Rooms.Select(r => r.Id).ToList();
+            var rooms = _dbContext.Rooms
+                .Where(r => roomIds.Contains(r.Id))
+                .ToList();
+            taskItem.Rooms = rooms;
+        }
+
         existingTask.UpdatedDate = DateTime.Now;
 
         _dbContext.SaveChanges();

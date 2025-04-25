@@ -39,7 +39,7 @@
                 <input type="hidden" name="TaskItem.IsCompleted" value="@Model.TaskItem?.IsCompleted.ToString().ToLower()" />
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
-                    <select class="form-select-lg" name="TaskItem.RoomId" required>
+                    <select class="form-select-lg" name="TaskItem.RoomIds" required>
                         <option disabled>Select Appartment</option>
                         @foreach (var room in Model.Rooms)
                         {

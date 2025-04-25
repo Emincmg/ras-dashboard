@@ -13,31 +13,30 @@ namespace RasDashboard.Pages.Employees
     {
         private readonly IRoomsService _roomsService;
         private readonly ITaskService _taskService;
-        private readonly IEmployeeService _employeeService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string? _userId;
         public required List<RoomDto> Rooms { get; set; }
         public required List<TaskDto> Tasks { get; set; }
-        [BindProperty]
-        public TaskItemDto? TaskItem { get; set; }
+        [BindProperty] public TaskItemDto? TaskItem { get; set; }
         public bool EmployeeHasCurrentTask { get; set; } = false;
         public List<Guid> TaskIds { get; set; } = [];
         public List<int> RoomIds { get; set; } = [];
-        public EmployeeIndexModel(IRoomsService roomsService, ITaskService taskService, UserManager<Employee> userManager, 
-            IHttpContextAccessor httpContextAccessor, IEmployeeService employeeService)
+
+        public EmployeeIndexModel(IRoomsService roomsService, ITaskService taskService,
+            UserManager<Employee> userManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _taskService = taskService;
             _roomsService = roomsService;
-            _employeeService = employeeService;
             Rooms = _roomsService.GetAllRooms();
             Tasks = _taskService.GetAllTasks();
             _httpContextAccessor = httpContextAccessor;
         }
-        
+
         public void OnGet()
         {
             _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-    
+
             if (_userId != null)
             {
                 TaskItem = _taskService.GetCurrentTask(_userId);
@@ -45,7 +44,7 @@ namespace RasDashboard.Pages.Employees
             }
             else
             {
-                TaskItem = new TaskItemDto(); 
+                TaskItem = new TaskItemDto();
             }
 
             Rooms = _roomsService.GetAllRooms();
@@ -63,39 +62,35 @@ namespace RasDashboard.Pages.Employees
             {
                 return Page();
             }
-            
+
+            _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (_userId != null)
+            {
+                TaskItem.EmployeeId = _userId;
+            }
+
             switch (action)
             {
                 case "update":
-                    // Update the current task.
+                    await _taskService.UpdateTask(TaskItem);
+                    break;
+                
+                case "stop":
+                    TaskItem.IsCurrent = false;
+                    TaskItem.IsCompleted = true;
                     await _taskService.UpdateTask(TaskItem);
                     break;
 
-                case "stop":
-                    // Toggle the current task state.
-                    if (TaskItem.IsCurrent)
-                    {
-                        TaskItem.IsCurrent = false;
-                        TaskItem.IsCompleted = true;
-                    }
-                    else
-                    {
-                        TaskItem.IsCurrent = true;
-                        TaskItem.IsCompleted = false;
-                    }
-                    await _taskService.UpdateTask(TaskItem);
-                    break;
-                
                 case "create":
+                    TaskItem.IsCurrent = true;
                     await _taskService.CreateTask(TaskItem);
                     break;
-                
+
                 default:
                     return Page();
             }
 
             return RedirectToPage("/Employees/EmployeeIndex");
         }
-
     }
 }
