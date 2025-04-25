@@ -58,11 +58,6 @@ namespace RasDashboard.Pages.Employees
         /// <returns></returns>
         public async Task<IActionResult> OnPostAsync(string action)
         {
-            if (!ModelState.IsValid || TaskItem == null)
-            {
-                return Page();
-            }
-
             _userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (_userId != null)
             {

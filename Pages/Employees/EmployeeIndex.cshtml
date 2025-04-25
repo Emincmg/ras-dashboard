@@ -40,10 +40,12 @@
                 <div class="col-md-6">
                     <label class="form-label">Appartment</label>
                     <select class="form-select-lg" name="TaskItem.RoomIds" required>
-                        <option disabled>Select Appartment</option>
+                        <option disabled selected>Select Apartment</option>
                         @foreach (var room in Model.Rooms)
                         {
-                            <option value="@room.Id" selected="@(Model.TaskItem?.RoomIds.Contains(room.Id) == true ? "selected" : "")">@room.Name</option>
+                            <option value="@room.Id" selected="@(Model.TaskItem?.RoomIds.Contains(room.Id) == true)">
+                                @room.Name
+                            </option>
                         }
                     </select>
                     <div class="valid-feedback">
@@ -88,7 +90,7 @@
                 </environment>
 
                 <div class="col-12 text-center">
-                    @if (Model.EmployeeHasCurrentTask)
+                    @if (Model.TaskItem != null && Model.TaskItem.IsCurrent == true)
                     {
                         <button class="btn btn-success" type="submit" name="action" value="update">Update</button>
                         <button class="btn btn-danger-600" type="submit" name="action" value="stop">Stop</button>

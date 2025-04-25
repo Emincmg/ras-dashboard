@@ -94,19 +94,39 @@ public class TaskRepository : ITaskRepository
             throw new InvalidOperationException("Task not found");
         }
 
-        if (existingTask.Tasks != null && existingTask.Tasks.Count > 0)
+        if (existingTask.Tasks is { Count: > 0 })
         {
+            var taskIds = existingTask.Tasks.Select(t => t.Id).ToList();
+    
+            // Track edilen entity'leri çek
+            var existingTasks = _dbContext.EmployeeTasks
+                .Where(t => taskIds.Contains(t.Id))
+                .ToList();
+
+            // Mevcut collection'ı temizle ve yeniden ekle
             existingTask.Tasks.Clear();
+            foreach (var task in existingTasks)
+            {
+                existingTask.Tasks.Add(task);
+            }
         }
-        existingTask.Tasks = taskItem.Tasks;
+        
 
         if (taskItem.Rooms is { Count: > 0 })
         {
             var roomIds = taskItem.Rooms.Select(r => r.Id).ToList();
-            var rooms = _dbContext.Rooms
+    
+            // Track edilen entity'leri çek
+            var existingRooms = _dbContext.Rooms
                 .Where(r => roomIds.Contains(r.Id))
                 .ToList();
-            taskItem.Rooms = rooms;
+
+            // Mevcut collection'ı temizle ve yeniden ekle
+            taskItem.Rooms.Clear();
+            foreach (var room in existingRooms)
+            {
+                taskItem.Rooms.Add(room);
+            }
         }
 
         existingTask.UpdatedDate = DateTime.Now;
