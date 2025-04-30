@@ -14,4 +14,8 @@ public class EmployeeDto
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public  List<TaskItemDto>? TaskItems { get; set; }
+    public string? ActiveTaskName { get; set; }
+    public string? Status { get; set; }
+    public string? TooltipTaskTitles { get; set; }
+
 }

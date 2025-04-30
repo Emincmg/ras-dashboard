@@ -18,6 +18,15 @@ namespace RasDashboard.Pages
             _logger = logger;
             _employeeService = employeeService;
             Employees = _employeeService.GetAllEmployees();
+
+            // TODO: Tooltip for task titles
+            foreach (var emp in Employees)
+            {
+                var currentTask = emp.TaskItems?.FirstOrDefault(t => t.IsCurrent && !t.IsCompleted);
+                emp.TooltipTaskTitles = currentTask?.Tasks != null
+                    ? string.Join(", ", currentTask.Tasks.Select(t => t.Title))
+                    : "No tasks available";
+            }
         }
 
         public void OnGet()

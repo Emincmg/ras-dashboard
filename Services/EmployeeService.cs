@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using RasDashboard.Areas.Identity.Data;
 using RasDashboard.DTOs;
@@ -16,18 +17,24 @@ public class EmployeeService : IEmployeeService
         _context = context;
         _mapper = mapper;
     }
-    
+
     /// <inheritdoc />
     public EmployeeDto? GetEmployeeById(string id)
     {
-        var employee = _context.Employees.Find(id);
+        var employee = _context.Employees
+            .Include(e => e.TaskItems)
+            .FirstOrDefault(e => e.Id == id); 
+
         return employee != null ? _mapper.Map<EmployeeDto>(employee) : null;
     }
 
     /// <inheritdoc />
     public List<EmployeeDto> GetAllEmployees()
     {
-        var employees = _context.Employees.ToList();
+        var employees = _context.Employees
+            .Include(e => e.TaskItems)
+            .ThenInclude(t => t.Rooms)
+            .ToList();
         return _mapper.Map<List<EmployeeDto>>(employees);
     }
 

@@ -8,6 +8,32 @@
     ViewData["subTitle"] = "Employees Overview";
     ViewData["script"] = @"<script>
      let table = new DataTable('#dataTable');
+ const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=""tooltip""]');
+ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+ // Boxed Tooltip
+ $(document).ready(function() {
+     $('.tooltip-button').each(function () {
+         var tooltipButton = $(this);
+         var tooltipContent = $(this).siblings('.my-tooltip').html();
+
+         // Initialize the tooltip
+         tooltipButton.tooltip({
+             title: tooltipContent,
+             trigger: 'hover',
+             html: true
+         });
+
+         // Optionally, reinitialize the tooltip if the content might change dynamically
+         tooltipButton.on('mouseenter', function() {
+             tooltipButton.tooltip('dispose').tooltip({
+                 title: tooltipContent,
+                 trigger: 'hover',
+                 html: true
+             }).tooltip('show');
+         });
+     });
+ });
 </script>";
 }
 
@@ -44,8 +70,13 @@
                             <h6 class="text-md mb-0 fw-medium flex-grow-1">@employee.Name</h6>
                         </div>
                     </td>
-                    <td> <span class="bg-info-focus text-info-main px-24 py-4 rounded-pill fw-medium text-sm">Dreamview Suite Ftericha</span> </td>
-                    <td> <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">Occupied</span> </td>
+                    <td>
+                        <button type="button" class="btn btn-info-100 text-info-600 radius-8 px-32 py-11" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-info" data-bs-title="">
+                            @(employee.ActiveTaskName ?? "No Active Task")
+                        </button>
+                      
+                    </td>
+                    <td> <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">@employee.Status</span> </td>
                     <td>
                         <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
                             <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
