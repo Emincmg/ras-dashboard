@@ -71,12 +71,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// add auth services
+// add auth & custom middlewares
 app.UseAuthentication();
 app.UseAuthorization();
-
-// add custom middlewares
-// app.UseMiddleware<UserTypeMiddleware>();
+app.UseMiddleware<UserTypeMiddleware>(); 
 
 app.MapRazorPages();
 app.MapControllers();

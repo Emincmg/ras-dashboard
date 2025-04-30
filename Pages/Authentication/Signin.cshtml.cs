@@ -52,11 +52,6 @@ namespace RasDashboard.Pages.Authentication
                 {
                     return RedirectToPage("/index");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");

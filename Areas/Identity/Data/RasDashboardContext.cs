@@ -52,7 +52,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 userManager.CreateAsync(emin, "Password123!").Wait();
                 userManager.AddToRoleAsync(emin, "Admin").Wait();
 
-                for (int i = 1; i <= 10; i++)
+                for (var i = 1; i <= 10; i++)
                 {
                     var employee = new Employee
                     {
@@ -69,20 +69,18 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             }
 
             // Seed EmployeeTask data
-            if (!context.Set<EmployeeTask>().Any())
-            {
-                context.Set<EmployeeTask>().AddRange(
-                    new EmployeeTask { Name = "Fast Check", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Cleaning Check", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Detailed Check", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Unexpected Visit", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Thermal Bath Control", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Nuki Battery Change", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Shopping", Description = "To be clarified later." },
-                    new EmployeeTask { Name = "Office Work", Description = "To be clarified later." }
-                );
-                context.SaveChanges();
-            }
+            if (context.Set<EmployeeTask>().Any()) return;
+            context.Set<EmployeeTask>().AddRange(
+                new EmployeeTask { Name = "Fast Check", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Cleaning Check", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Detailed Check", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Unexpected Visit", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Thermal Bath Control", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Nuki Battery Change", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Shopping", Description = "To be clarified later." },
+                new EmployeeTask { Name = "Office Work", Description = "To be clarified later." }
+            );
+            context.SaveChanges();
         })
         .UseAsyncSeeding(async (context, _, cancellationToken) =>
         {

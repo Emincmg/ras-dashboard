@@ -8,30 +8,20 @@ public class UserTypeMiddleware
     {
         _next = next;
     }
-    
+
     public async Task Invoke(HttpContext context)
     {
-        if (context.Request.Path == "/")
+        var user = context.User;
+        
+        if (context.Request.Path == "/" && user.Identity is { IsAuthenticated: true })
         {
-            var user = context.User;
-            var userType = user.IsInRole("Admin") ? "Admin" : user.IsInRole("User") ? "User" : "Guest";
-
-            if (userType == "Admin")
-            {
-                context.Response.Redirect("/");
-            }
-            else if (userType == "/authentication/signin")
+            if (user.IsInRole("Employee"))
             {
                 context.Response.Redirect("/employees/employeeindex");
-            }
-            else
-            {
-                context.Response.Redirect("/authentication/signin");
+                return;
             }
         }
-        else
-        {
-            await _next(context);
-        }
+
+        await _next(context);
     }
 }
