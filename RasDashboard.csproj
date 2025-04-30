@@ -30,7 +30,7 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Employee\EmployeeIndex.cshtml" />
   </ItemGroup>
 

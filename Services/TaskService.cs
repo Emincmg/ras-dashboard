@@ -2,6 +2,7 @@ using AutoMapper;
 using RasDashboard.DTOs;
 using RasDashboard.Interfaces;
 using RasDashboard.Models;
+using RasDashboard.Repositories;
 
 namespace RasDashboard.Services;
 
@@ -78,18 +79,42 @@ public class TaskService : ITaskService
     }
 
     /// <inheritdoc />
-    public Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto)
+    public async Task<TaskItemDto> UpdateTask(TaskItemDto taskItemDto)
     {
-         var taskItem = _taskRepository.GetTaskById(taskItemDto.Id);
-         if (taskItem == null)
-         {
-             throw new NullReferenceException("Task not found");
-         }
-         taskItem = _mapper.Map(taskItemDto, taskItem);
-         _taskRepository.UpdateTask(taskItem);
-        
-        return Task.FromResult(taskItemDto);
+        var existingTask = await _taskRepository.GetTaskByIdAsync(taskItemDto.Id);
+        if (existingTask == null)
+        {
+            throw new Exception("Could not find the task to update.");
+        }
+
+        existingTask.Title = taskItemDto.Title;
+        existingTask.Description = taskItemDto.Description;
+        existingTask.EmployeeId = taskItemDto.EmployeeId;
+        existingTask.IsCompleted = taskItemDto.IsCompleted;
+        existingTask.IsCurrent = taskItemDto.IsCurrent;
+        existingTask.DueDate = taskItemDto.DueDate;
+
+        var tasks = await _taskRepository.GetEmployeeTasksByIdsAsync(taskItemDto.TaskIds);
+        var rooms = await _taskRepository.GetRoomsByIdsAsync(taskItemDto.RoomIds);
+
+        existingTask.Tasks.Clear();
+        existingTask.Rooms.Clear();
+
+        foreach (var task in tasks)
+        {
+            existingTask.Tasks.Add(task);
+        }
+
+        foreach (var room in rooms)
+        {
+            existingTask.Rooms.Add(room);
+        }
+
+        _taskRepository.UpdateTask(existingTask);
+
+        return taskItemDto;
     }
+
 
     /// <inheritdoc />
     public Task<TaskItemDto> DeleteTask(int id)

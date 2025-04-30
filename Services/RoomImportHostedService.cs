@@ -32,8 +32,8 @@ public class RoomImportHostedService : IHostedService
         _configuration = configuration;
         _mapper = mapper;
 
-        _apiKey = configuration["ExternalApis:ApiKEy"] ?? throw new NullReferenceException("API Key bulunamadı.");
-        _roomsApiUrl = configuration["ExternalApis:RoomsEndpoint"] ?? throw new NullReferenceException("Rooms API endpoint'i bulunamadı.");
+        _apiKey = configuration["Hostify:ApiKey"] ?? throw new NullReferenceException("API Key bulunamadı.");
+        _roomsApiUrl = configuration["Hostify:RoomsEndpoint"] ?? throw new NullReferenceException("Rooms API endpoint'i bulunamadı.");
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)

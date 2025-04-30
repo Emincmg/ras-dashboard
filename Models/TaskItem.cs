@@ -10,8 +10,8 @@ public class TaskItem : Entity
     [MaxLength(1000)]
     public string? Description { get; set; }
 
-    public bool IsCompleted { get; set; } = false;
-    public bool IsCurrent { get; set; } = false;
+    public bool? IsCompleted { get; set; }
+    public bool? IsCurrent { get; set; }
  
     public DateTime DueDate { get; set; } = DateTime.Now;
     public DateTime StartTime { get; set; } = DateTime.Now;

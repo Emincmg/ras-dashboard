@@ -42,7 +42,7 @@ public class TaskRepository : ITaskRepository
         return _dbContext.TaskItems
             .Include(t => t.Tasks)
             .Include(t => t.Rooms)
-            .FirstOrDefault(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent);
+            .FirstOrDefault(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent == true);
     }
 
     /// <inheritdoc />
@@ -51,7 +51,7 @@ public class TaskRepository : ITaskRepository
         var currentTask = await _dbContext.TaskItems
             .Include(t => t.Tasks)
             .Include(t => t.Rooms)
-            .Where(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent)
+            .Where(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent == true)
             .FirstOrDefaultAsync();
         if (currentTask == null)
         {
@@ -64,13 +64,19 @@ public class TaskRepository : ITaskRepository
     /// <inheritdoc />
     public TaskItem? GetTaskById(Guid id)
     {
-        return _dbContext.TaskItems.Find(id);
+        return _dbContext.TaskItems
+            .Include(t => t.Tasks)
+            .Include(t => t.Rooms)
+            .FirstOrDefault(t => t.Id == id);
     }
 
     /// <inheritdoc />
     public async Task<TaskItem?> GetTaskByIdAsync(Guid id)
     {
-        return await _dbContext.TaskItems.FindAsync(id);
+        return await _dbContext.TaskItems
+            .Include(t => t.Tasks)
+            .Include(t => t.Rooms)
+            .FirstOrDefaultAsync(t => t.Id == id);
     }
 
     /// <inheritdoc />
@@ -84,61 +90,38 @@ public class TaskRepository : ITaskRepository
     /// <inheritdoc />
     public Task<TaskItem> UpdateTask(TaskItem taskItem)
     {
-        var existingTask = _dbContext.TaskItems
-            .Include(t => t.Tasks)
-            .Include(t => t.Rooms)
-            .FirstOrDefault(t => t.Id == taskItem.Id);
-        
-        if (existingTask == null)
-        {
-            throw new InvalidOperationException("Task not found");
-        }
-
-        if (existingTask.Tasks is { Count: > 0 })
-        {
-            var taskIds = existingTask.Tasks.Select(t => t.Id).ToList();
-    
-            // Track edilen entity'leri çek
-            var existingTasks = _dbContext.EmployeeTasks
-                .Where(t => taskIds.Contains(t.Id))
-                .ToList();
-
-            // Mevcut collection'ı temizle ve yeniden ekle
-            existingTask.Tasks.Clear();
-            foreach (var task in existingTasks)
-            {
-                existingTask.Tasks.Add(task);
-            }
-        }
-        
-
-        if (taskItem.Rooms is { Count: > 0 })
-        {
-            var roomIds = taskItem.Rooms.Select(r => r.Id).ToList();
-    
-            // Track edilen entity'leri çek
-            var existingRooms = _dbContext.Rooms
-                .Where(r => roomIds.Contains(r.Id))
-                .ToList();
-
-            // Mevcut collection'ı temizle ve yeniden ekle
-            taskItem.Rooms.Clear();
-            foreach (var room in existingRooms)
-            {
-                taskItem.Rooms.Add(room);
-            }
-        }
-
-        existingTask.UpdatedDate = DateTime.Now;
+        taskItem.UpdatedDate = DateTime.Now;
 
         _dbContext.SaveChanges();
 
-        return Task.FromResult(existingTask);
+        return Task.FromResult(taskItem);
     }
 
     /// <inheritdoc />
     public Task<TaskItem> DeleteTask(int id)
     {
         throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public async Task<List<EmployeeTask>> GetEmployeeTasksByIdsAsync(List<Guid> ids)
+    {
+        return await _dbContext.EmployeeTasks
+            .Where(t => ids.Contains(t.Id))
+            .ToListAsync();
+    }
+
+    /// <inheritdoc />
+    public async Task<List<Room>> GetRoomsByIdsAsync(List<int> ids)
+    {
+        return await _dbContext.Rooms
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync();
+    }
+    
+    /// <inheritdoc />
+    public async Task SaveChangesAsync()
+    {
+        await _dbContext.SaveChangesAsync();
     }
 }

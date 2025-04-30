@@ -78,6 +78,7 @@ namespace RasDashboard.Pages.Employees
 
                 case "create":
                     TaskItem.IsCurrent = true;
+                    TaskItem.IsCompleted = false;
                     await _taskService.CreateTask(TaskItem);
                     break;
 
