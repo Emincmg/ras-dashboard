@@ -15,6 +15,10 @@ public class SeedData
             await roleManager.CreateAsync(new IdentityRole("Employee"));
         }
 
+        if (!await roleManager.RoleExistsAsync("Admin"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+        }
         var emin = new Employee
         {
             UserName = "EminComoglu",

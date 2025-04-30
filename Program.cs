@@ -1,7 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RasDashboard.Areas.Identity.Data;
 using RasDashboard.Interfaces;
 using RasDashboard.Models;
@@ -32,9 +31,6 @@ builder.Services.AddIdentity<Employee, IdentityRole>(options =>
 
 var authSection = builder.Configuration.GetSection("Authentication");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"Connection string: {connectionString}");
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = authSection.GetValue<string>("LoginPath") ?? "/Identity/Account/Login";
@@ -45,6 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 // add repositories
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 // own services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();

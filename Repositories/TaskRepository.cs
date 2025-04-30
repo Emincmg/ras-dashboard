@@ -14,13 +14,11 @@ public class TaskRepository : ITaskRepository
         _dbContext = dbContext;
     }
 
-    /// <inheritdoc />
     public List<EmployeeTask> GetAllTasks()
     {
         return _dbContext.EmployeeTasks.ToList();
     }
 
-    /// <inheritdoc />
     public Task<TaskItem> CreateTask(TaskItem taskItem)
     {
         taskItem.Tasks =  _dbContext.EmployeeTasks
@@ -36,7 +34,6 @@ public class TaskRepository : ITaskRepository
         return Task.FromResult(taskItem);
     }
 
-    /// <inheritdoc />
     public TaskItem? GetCurrentTask(string employeeId)
     {
         return _dbContext.TaskItems
@@ -45,7 +42,6 @@ public class TaskRepository : ITaskRepository
             .FirstOrDefault(t => t.Employee != null && t.EmployeeId == employeeId && t.IsCurrent == true);
     }
 
-    /// <inheritdoc />
     public async Task<TaskItem>? GetCurrentTaskAsync(string employeeId)
     {
         var currentTask = await _dbContext.TaskItems
@@ -61,7 +57,6 @@ public class TaskRepository : ITaskRepository
         return currentTask;
     }
 
-    /// <inheritdoc />
     public TaskItem? GetTaskById(Guid id)
     {
         return _dbContext.TaskItems
@@ -70,7 +65,6 @@ public class TaskRepository : ITaskRepository
             .FirstOrDefault(t => t.Id == id);
     }
 
-    /// <inheritdoc />
     public async Task<TaskItem?> GetTaskByIdAsync(Guid id)
     {
         return await _dbContext.TaskItems
@@ -79,7 +73,6 @@ public class TaskRepository : ITaskRepository
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    /// <inheritdoc />
     public async Task<TaskItem> CreateTaskAsync(TaskItem taskItem)
     {
         await _dbContext.TaskItems.AddAsync(taskItem);
@@ -87,7 +80,6 @@ public class TaskRepository : ITaskRepository
         return await Task.FromResult(taskItem);
     }
 
-    /// <inheritdoc />
     public Task<TaskItem> UpdateTask(TaskItem taskItem)
     {
         taskItem.UpdatedDate = DateTime.Now;
@@ -97,13 +89,11 @@ public class TaskRepository : ITaskRepository
         return Task.FromResult(taskItem);
     }
 
-    /// <inheritdoc />
     public Task<TaskItem> DeleteTask(int id)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
     public async Task<List<EmployeeTask>> GetEmployeeTasksByIdsAsync(List<Guid> ids)
     {
         return await _dbContext.EmployeeTasks
@@ -111,7 +101,6 @@ public class TaskRepository : ITaskRepository
             .ToListAsync();
     }
 
-    /// <inheritdoc />
     public async Task<List<Room>> GetRoomsByIdsAsync(List<int> ids)
     {
         return await _dbContext.Rooms
@@ -119,7 +108,6 @@ public class TaskRepository : ITaskRepository
             .ToListAsync();
     }
     
-    /// <inheritdoc />
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();

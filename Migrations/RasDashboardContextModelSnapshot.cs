@@ -351,10 +351,10 @@ namespace RasDashboard.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool?>("IsCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsCurrent")
+                    b.Property<bool?>("IsCurrent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("StartTime")

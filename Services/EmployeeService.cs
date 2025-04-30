@@ -9,65 +9,44 @@ namespace RasDashboard.Services;
 
 public class EmployeeService : IEmployeeService
 {
-    private readonly RasDashboardContext _context;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IMapper _mapper;
 
-    public EmployeeService(RasDashboardContext context, IMapper mapper)
+    public EmployeeService(IMapper mapper, IEmployeeRepository employeeRepository)
     {
-        _context = context;
         _mapper = mapper;
+        _employeeRepository = employeeRepository;
     }
 
-    /// <inheritdoc />
     public EmployeeDto? GetEmployeeById(string id)
     {
-        var employee = _context.Employees
-            .Include(e => e.TaskItems)
-            .FirstOrDefault(e => e.Id == id);
+        var employee = _employeeRepository.GetEmployee(id);
 
-        return employee != null ? _mapper.Map<EmployeeDto>(employee) : null;
+        return _mapper.Map<EmployeeDto>(employee);
     }
 
-    /// <inheritdoc />
     public List<EmployeeDto> GetAllEmployees()
     {
-        var employees = _context.Employees
-            .Where(e => e.Position == "Employee")
-            .Include(e => e.TaskItems)!
-            .ThenInclude(ti => ti.Tasks)
-            .Include(e => e.TaskItems)!
-            .ThenInclude(ti => ti.Rooms)
-            .ToList();
+        var employees = _employeeRepository.GetEmployees();
+
         return _mapper.Map<List<EmployeeDto>>(employees);
     }
 
-    /// <inheritdoc />
     public void AddEmployee(EmployeeDto employeeDto)
     {
         var employee = _mapper.Map<Employee>(employeeDto);
-        _context.Employees.Add(employee);
-        _context.SaveChanges();
+        _employeeRepository.AddEmployee(employee);
     }
 
-    /// <inheritdoc />
     public void UpdateEmployee(EmployeeDto employeeDto)
     {
-        var employee = _context.Employees.Find(employeeDto.Id);
-        if (employee != null)
-        {
-            _mapper.Map(employeeDto, employee);
-            _context.SaveChanges();
-        }
+        var employee =_employeeRepository.GetEmployee(employeeDto.Id);
+        _mapper.Map(employeeDto, employee);
+        _employeeRepository.UpdateEmployee(employee);
     }
 
-    /// <inheritdoc />
     public void DeleteEmployee(string id)
     {
-        var employee = _context.Employees.Find(id);
-        if (employee != null)
-        {
-            _context.Employees.Remove(employee);
-            _context.SaveChanges();
-        }
+        _employeeRepository.DeleteEmployee(id);
     }
 }

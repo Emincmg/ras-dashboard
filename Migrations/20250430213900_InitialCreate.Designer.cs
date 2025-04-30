@@ -12,7 +12,7 @@ using RasDashboard.Areas.Identity.Data;
 namespace RasDashboard.Migrations
 {
     [DbContext(typeof(RasDashboardContext))]
-    [Migration("20250418105706_InitialCreate")]
+    [Migration("20250430213900_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -354,10 +354,10 @@ namespace RasDashboard.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool?>("IsCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsCurrent")
+                    b.Property<bool?>("IsCurrent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("StartTime")
