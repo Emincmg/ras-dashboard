@@ -23,7 +23,7 @@ public class EmployeeService : IEmployeeService
     {
         var employee = _context.Employees
             .Include(e => e.TaskItems)
-            .FirstOrDefault(e => e.Id == id); 
+            .FirstOrDefault(e => e.Id == id);
 
         return employee != null ? _mapper.Map<EmployeeDto>(employee) : null;
     }
@@ -32,11 +32,12 @@ public class EmployeeService : IEmployeeService
     public List<EmployeeDto> GetAllEmployees()
     {
         var employees = _context.Employees
-    .Include(e => e.TaskItems)
-        .ThenInclude(ti => ti.Tasks)
-    .Include(e => e.TaskItems)
-        .ThenInclude(ti => ti.Rooms)
-    .ToList();
+            .Where(e => e.Position == "Employee")
+            .Include(e => e.TaskItems)!
+            .ThenInclude(ti => ti.Tasks)
+            .Include(e => e.TaskItems)!
+            .ThenInclude(ti => ti.Rooms)
+            .ToList();
         return _mapper.Map<List<EmployeeDto>>(employees);
     }
 

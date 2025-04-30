@@ -9,6 +9,7 @@ using RasDashboard.Services;
 using RasDashboard.FluentValidators;
 using RasDashboard.Middlewares;
 using RasDashboard.Repositories;
+using RasDashboard.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,13 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.SeedUsersAsync(services);
+}
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
