@@ -6,34 +6,21 @@
 @{
     ViewData["title"] = "Dashboard";
     ViewData["subTitle"] = "Employees Overview";
-    ViewData["script"] = @"<script>
-     let table = new DataTable('#dataTable');
- const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=""tooltip""]');
- const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+ViewData["script"] = @"<script>
+    $(document).ready(function () {
+        let table = new DataTable('#dataTable');
 
- // Boxed Tooltip
- $(document).ready(function() {
-     $('.tooltip-button').each(function () {
-         var tooltipButton = $(this);
-         var tooltipContent = $(this).siblings('.my-tooltip').html();
+        function initializeTooltips() {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=""tooltip""]');
+            tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+        }
 
-         // Initialize the tooltip
-         tooltipButton.tooltip({
-             title: tooltipContent,
-             trigger: 'hover',
-             html: true
-         });
+        initializeTooltips();
 
-         // Optionally, reinitialize the tooltip if the content might change dynamically
-         tooltipButton.on('mouseenter', function() {
-             tooltipButton.tooltip('dispose').tooltip({
-                 title: tooltipContent,
-                 trigger: 'hover',
-                 html: true
-             }).tooltip('show');
-         });
-     });
- });
+        $('#dataTable').on('draw.dt', function () {
+            initializeTooltips();
+        });
+    });
 </script>";
 }
 
@@ -71,12 +58,21 @@
                         </div>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-info-100 text-info-600 radius-8 px-32 py-11" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-info" data-bs-title="">
+                        <button type="button" class="btn btn-info-100 text-info-600 radius-8 px-32 py-11" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-info" data-bs-title="@employee.TooltipTaskTitles">
                             @(employee.ActiveTaskName ?? "No Active Task")
                         </button>
                       
                     </td>
-                    <td> <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">@employee.Status</span> </td>
+                    <td> 
+                                           @if (employee.Status == "Occupied")
+                                           {
+                                               <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">@employee.Status</span>
+                                           }
+                                           else if (employee.Status == "Free")
+                                           {
+                                               <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">@employee.Status</span>
+                                           }
+                                       </td>
                     <td>
                         <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
                             <iconify-icon icon="iconamoon:eye-light"></iconify-icon>

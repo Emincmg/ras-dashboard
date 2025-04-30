@@ -19,9 +19,10 @@ public class TaskItemProfile : Profile
         // Entity → DTO
         CreateMap<TaskItem, TaskItemDto>()
             .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EmployeeId))
-            .ForMember(dest => dest.TaskIds, opt => opt.MapFrom(src =>
-                src.Tasks.Select(t => t.Id).ToList()))
-            .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src =>
-                src.Rooms.Select(r => r.Id).ToList()));
+      .ForMember(dest => dest.TaskIds, opt => opt.MapFrom(src =>
+          src.Tasks.Select(t => t.Id).ToList()))
+      .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src =>
+          src.Rooms.Select(r => r.Id).ToList()));
+
     }
 }

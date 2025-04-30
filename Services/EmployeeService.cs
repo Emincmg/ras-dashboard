@@ -32,9 +32,11 @@ public class EmployeeService : IEmployeeService
     public List<EmployeeDto> GetAllEmployees()
     {
         var employees = _context.Employees
-            .Include(e => e.TaskItems)
-            .ThenInclude(t => t.Rooms)
-            .ToList();
+    .Include(e => e.TaskItems)
+        .ThenInclude(ti => ti.Tasks)
+    .Include(e => e.TaskItems)
+        .ThenInclude(ti => ti.Rooms)
+    .ToList();
         return _mapper.Map<List<EmployeeDto>>(employees);
     }
 

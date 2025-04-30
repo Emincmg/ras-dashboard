@@ -19,7 +19,8 @@ public class TaskItemDto
     public string? EmployeeId { get; set; }
     public List<Guid> TaskIds { get; set; } = [];
     public List<int> RoomIds { get; set; } = [];
-    
+    public string TooltipTaskTitles { get; set; } = string.Empty;
+
     public List<IFormFile> MediaFiles { get; set; } = [];
 }
 

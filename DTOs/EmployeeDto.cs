@@ -16,6 +16,6 @@ public class EmployeeDto
     public  List<TaskItemDto>? TaskItems { get; set; }
     public string? ActiveTaskName { get; set; }
     public string? Status { get; set; }
-    public string? TooltipTaskTitles { get; set; }
+    public string TooltipTaskTitles { get; set; }
 
 }
