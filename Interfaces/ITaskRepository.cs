@@ -8,7 +8,7 @@ public interface ITaskRepository
     /// Gets all the employee tasks from the database.
     /// </summary>
     /// <returns></returns>
-    public List<EmployeeTask> GetAllTasks();
+    List<EmployeeTask> GetAllTasks();
 
     /// <summary>
     /// Creates a new task item in the database.
@@ -17,7 +17,7 @@ public interface ITaskRepository
     /// <returns>
     /// A Task containing the created TaskItem object after it has been added to the database.
     /// </returns>
-    public Task<TaskItem> CreateTask(TaskItem taskItem);
+    Task<TaskItem> CreateTask(TaskItem taskItem);
 
     /// <summary>
     /// Asynchronously creates a new task item in the database.
@@ -26,7 +26,7 @@ public interface ITaskRepository
     /// <returns>
     /// A Task containing the created TaskItem object after it has been added to the database.
     /// </returns>
-    public Task<TaskItem> CreateTaskAsync(TaskItem taskItem);
+    Task<TaskItem> CreateTaskAsync(TaskItem taskItem);
 
     /// <summary>
     /// Updates an existing task item in the database.
@@ -34,7 +34,7 @@ public interface ITaskRepository
     /// <param name="taskItem"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task<TaskItem> UpdateTask(TaskItem taskItem);
+    Task<TaskItem> UpdateTask(TaskItem taskItem);
 
     /// <summary>
     /// Deletes a task from the database.
@@ -42,35 +42,35 @@ public interface ITaskRepository
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task<TaskItem> DeleteTask(int id);
+    Task<TaskItem> DeleteTask(int id);
 
     /// <summary>
     /// Gets the current task for the logged-in employee.
     /// </summary>
     /// <param name="employeeId"> ID of the employee.</param>
     /// <returns></returns>
-    public TaskItem? GetCurrentTask(string employeeId);
+    TaskItem? GetCurrentTask(string employeeId);
 
     /// <summary>
     /// Gets the current task for the logged-in employee.
     /// </summary>
     /// <param name="employeeId"> ID of the employee that its task will be retrieved. </param>
     /// <returns></returns>
-    public Task<TaskItem>? GetCurrentTaskAsync(string employeeId);
+    Task<TaskItem>? GetCurrentTaskAsync(string employeeId);
 
     /// <summary>
     /// Return a task item by its ID.
     /// </summary>
     /// <param name="id">ID of the task item</param>
     /// <returns></returns>
-    public TaskItem? GetTaskById(Guid id);
+    TaskItem? GetTaskById(Guid id);
 
     /// <summary>
     /// Return a task item by its ID asynchronously.
     /// </summary>
     /// <param name="id">ID of the task item</param>
     /// <returns></returns>
-    public Task<TaskItem?> GetTaskByIdAsync(Guid id);
+    Task<TaskItem?> GetTaskByIdAsync(Guid id);
 
 
     /// <summary>
@@ -78,19 +78,19 @@ public interface ITaskRepository
     /// </summary>
     /// <param name="ids"></param>
     /// <returns></returns>
-    public Task<List<EmployeeTask>> GetEmployeeTasksByIdsAsync(List<Guid> ids);
+    Task<List<EmployeeTask>> GetEmployeeTasksByIdsAsync(List<Guid> ids);
 
     /// <summary>
     /// Get all rooms from the database.
     /// </summary>
     /// <param name="ids"></param>
     /// <returns></returns>
-    public Task<List<Room>> GetRoomsByIdsAsync(List<int> ids);
+    Task<List<Room>> GetRoomsByIdsAsync(List<int> ids);
 
 
     /// <summary>
     /// Save changes to the database.
     /// </summary>
     /// <returns></returns>
-    public async Task SaveChangesAsync() { }
+    Task SaveChangesAsync();
 }
